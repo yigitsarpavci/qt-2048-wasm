@@ -1,0 +1,6 @@
+.DS_Store
+build/
+build_local/
+build_check/
+build_test/
+*.user
