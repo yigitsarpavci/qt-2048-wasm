@@ -1,0 +1,53 @@
+name: Deploy 2048 to GitHub Pages
+on:
+  push:
+    branches: [ main ]
+permissions:
+  contents: write
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+      - name: Install Qt (WASM)
+        uses: jurplel/install-qt-action@v3
+        with:
+          version: '6.6.1'
+          target: 'desktop'
+          arch: 'wasm_singlethread'
+      - name: Install Qt (Host Tools)
+        uses: jurplel/install-qt-action@v3
+        with:
+          version: '6.6.1'
+          target: 'desktop'
+          arch: 'gcc_64'
+      - name: Setup emscripten
+        uses: mymindstorm/setup-emsdk@v12
+        with:
+          version: '3.1.37'
+      - name: Build Project
+        run: |
+          mkdir -p build
+          cd build
+          # Find host tools and target qt-cmake
+          export QT_HOST_PATH=$(find /home/runner/work/ -name "gcc_64" | head -n 1)
+          export QT_CMAKE=$(find /home/runner/work/ -name "qt-cmake" | head -n 1)
+          chmod +x $QT_CMAKE
+          echo "Using Host Path: $QT_HOST_PATH"
+          echo "Using qt-cmake: $QT_CMAKE"
+          # Run official qt-cmake
+          $QT_CMAKE .. -DQT_HOST_PATH=$QT_HOST_PATH
+          cmake --build . --parallel $(nproc)
+      - name: Prepare Deployment Folder
+        run: |
+          mkdir -p public
+          cp build/2048.html public/index.html
+          cp build/2048.js public/
+          cp build/2048.wasm public/
+          cp build/qtloader.js public/
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./public
