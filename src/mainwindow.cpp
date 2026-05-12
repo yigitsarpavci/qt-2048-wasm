@@ -372,3 +372,4 @@ void MainWindow::makeRandomMove() {
     for (auto d : ds) if (m_engine.move(d)) { updateUI(); break; }
 }
 // v1.2: Game modes
+// v1.3: Persistence
