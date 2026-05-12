@@ -12065,8 +12065,8 @@ var _emscripten_stack_get_current = function() {
 
 /** @type {function(...*):?} */
 var ___cxa_is_pointer_type = createExportWrapper("__cxa_is_pointer_type");
-var ___start_em_js = Module['___start_em_js'] = 8927328;
-var ___stop_em_js = Module['___stop_em_js'] = 8927810;
+var ___start_em_js = Module['___start_em_js'] = 8927104;
+var ___stop_em_js = Module['___stop_em_js'] = 8927586;
 function invoke_ii(index,a1) {
   var sp = stackSave();
   try {
