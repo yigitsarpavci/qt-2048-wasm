@@ -132,3 +132,4 @@ private:
 };
 
 #endif // GAMEENGINE_H
+// v1.2: Modes
