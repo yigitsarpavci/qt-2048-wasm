@@ -209,3 +209,4 @@ void GameEngine::logTransaction(int delta, int merges) {
         .arg(ts).arg(m_txCounter).arg(m_score).arg(delta).arg(merges).arg(m_nextId);
 }
 // v1.1: Undo persistence
+// v1.1: Undo support
