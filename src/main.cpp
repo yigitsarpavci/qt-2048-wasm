@@ -16,3 +16,4 @@ int main(int argc, char *argv[])
 
     return app.exec();
 }
+// v1.5: Final Polish
