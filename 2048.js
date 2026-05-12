@@ -12019,11 +12019,11 @@ var _main = Module["_main"] = createExportWrapper("__main_argc_argv");
 /** @type {function(...*):?} */
 var _free = createExportWrapper("free");
 /** @type {function(...*):?} */
-var _malloc = createExportWrapper("malloc");
+var _fflush = Module["_fflush"] = createExportWrapper("fflush");
 /** @type {function(...*):?} */
 var ___errno_location = createExportWrapper("__errno_location");
 /** @type {function(...*):?} */
-var _fflush = Module["_fflush"] = createExportWrapper("fflush");
+var _malloc = createExportWrapper("malloc");
 /** @type {function(...*):?} */
 var ___getTypeName = createExportWrapper("__getTypeName");
 /** @type {function(...*):?} */
@@ -12065,8 +12065,8 @@ var _emscripten_stack_get_current = function() {
 
 /** @type {function(...*):?} */
 var ___cxa_is_pointer_type = createExportWrapper("__cxa_is_pointer_type");
-var ___start_em_js = Module['___start_em_js'] = 8927968;
-var ___stop_em_js = Module['___stop_em_js'] = 8928450;
+var ___start_em_js = Module['___start_em_js'] = 8928144;
+var ___stop_em_js = Module['___stop_em_js'] = 8928626;
 function invoke_ii(index,a1) {
   var sp = stackSave();
   try {
