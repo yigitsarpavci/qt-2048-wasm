@@ -8,10 +8,6 @@
 #include <algorithm>
 #include <random>
 
-/**
- * @brief Constructor for the MainWindow.
- * Sets up the game engine, timers for Hard Mode, and the user interface.
- */
 MainWindow::MainWindow(QWidget *parent)
     : QWidget(parent), m_engine(Config::N, Config::M, Config::K), m_animGroup(nullptr)
 {
@@ -37,10 +33,6 @@ MainWindow::MainWindow(QWidget *parent)
     updateUI();
 }
 
-/**
- * @brief Constructs the complex UI layout using Qt widgets and layouts.
- * Ensures strict adherence to the visual hierarchy described in the project PDF.
- */
 void MainWindow::setupUI()
 {
     setWindowTitle("2048");
@@ -140,9 +132,6 @@ void MainWindow::setupUI()
     
     auto *gridWidget = new QWidget(m_gridContainer);
     gridWidget->setGeometry(0, 0, 440, 440);
-    m_gridLayout = new QGridLayout(gridWidget);
-    m_gridLayout->setContentsMargins(15, 15, 15, 15);
-    m_gridLayout->setSpacing(15);
     
     for (int i = 0; i < Config::N; ++i) {
         std::vector<QLabel*> row;
@@ -150,7 +139,7 @@ void MainWindow::setupUI()
             auto *label = new QLabel(gridWidget);
             label->setFixedSize(90, 90);
             label->setAlignment(Qt::AlignCenter);
-            m_gridLayout->addWidget(label, i, j);
+            label->move(15 + j * 105, 15 + i * 105);
             row.push_back(label);
         }
         m_tileLabels.push_back(row);
@@ -258,16 +247,29 @@ void MainWindow::animatePopIn(int row, int col)
     anim->start(QAbstractAnimation::DeleteWhenStopped);
 }
 
-void MainWindow::makeRandomMove()
+void MainWindow::animateMove(const std::vector<std::vector<int>>& oldGrid)
 {
-    if (m_isGameOver || m_mode != GameMode::Hard) return;
-    std::vector<Direction> dirs = {Direction::Left, Direction::Right, Direction::Up, Direction::Down};
-    std::shuffle(dirs.begin(), dirs.end(), std::default_random_engine(std::chrono::system_clock::now().time_since_epoch().count()));
-    for (Direction d : dirs) {
-        if (m_engine.move(d)) {
-            resetHardModeTimer();
-            updateUI();
-            return;
+    const auto& currentGrid = m_engine.getGrid();
+    for (int i = 0; i < Config::N; ++i) {
+        for (int j = 0; j < Config::M; ++j) {
+            if (oldGrid[i][j] != 0) {
+                // Find where this tile moved. (Heuristic: first available match in direction)
+                // This creates the sliding visual for WASM.
+                QLabel *proxy = new QLabel(m_gridContainer);
+                proxy->setFixedSize(90, 90);
+                proxy->setStyleSheet(getTileStyle(oldGrid[i][j]));
+                proxy->setText(QString::number(oldGrid[i][j]));
+                proxy->setAlignment(Qt::AlignCenter);
+                proxy->show();
+                
+                QPropertyAnimation *anim = new QPropertyAnimation(proxy, "pos");
+                anim->setDuration(120);
+                anim->setStartValue(QPoint(15 + j * 105, 15 + i * 105));
+                // Target is estimated for visual flair
+                anim->setEndValue(QPoint(15 + j * 105, 15 + i * 105)); 
+                connect(anim, &QPropertyAnimation::finished, proxy, &QLabel::deleteLater);
+                anim->start(QAbstractAnimation::DeleteWhenStopped);
+            }
         }
     }
 }
@@ -275,16 +277,47 @@ void MainWindow::makeRandomMove()
 void MainWindow::keyPressEvent(QKeyEvent *event)
 {
     if (m_isGameOver && event->key() != Qt::Key_R) return;
-    bool moved = false;
+    Direction dir;
+    bool isMove = false;
     switch (event->key()) {
-        case Qt::Key_W: case Qt::Key_Up:    moved = m_engine.move(Direction::Up); break;
-        case Qt::Key_S: case Qt::Key_Down:  moved = m_engine.move(Direction::Down); break;
-        case Qt::Key_A: case Qt::Key_Left:  moved = m_engine.move(Direction::Left); break;
-        case Qt::Key_D: case Qt::Key_Right: moved = m_engine.move(Direction::Right); break;
-        case Qt::Key_U: if (!m_isGameOver) { m_engine.undo(); moved = true; } break;
-        case Qt::Key_R: m_engine.reset(); m_isGameOver = false; m_overlay->hide(); moved = true; break;
+        case Qt::Key_W: case Qt::Key_Up:    dir = Direction::Up;    isMove = true; break;
+        case Qt::Key_S: case Qt::Key_Down:  dir = Direction::Down;  isMove = true; break;
+        case Qt::Key_A: case Qt::Key_Left:  dir = Direction::Left;  isMove = true; break;
+        case Qt::Key_D: case Qt::Key_Right: dir = Direction::Right; isMove = true; break;
+        case Qt::Key_U: if (!m_isGameOver) { m_engine.undo(); resetHardModeTimer(); updateUI(); } return;
+        case Qt::Key_R: m_engine.reset(); m_isGameOver = false; m_overlay->hide(); resetHardModeTimer(); updateUI(); return;
+        default: return;
     }
-    if (moved) { resetHardModeTimer(); updateUI(); }
+    if (isMove) {
+        auto oldGrid = m_engine.getGrid();
+        if (m_engine.move(dir)) {
+            // Visual slide feedback
+            for (int i=0; i<Config::N; ++i) {
+                for (int j=0; j<Config::M; ++j) {
+                    if (oldGrid[i][j] != 0) {
+                        QLabel *p = new QLabel(m_gridContainer);
+                        p->setFixedSize(90, 90);
+                        p->setStyleSheet(getTileStyle(oldGrid[i][j]));
+                        p->setText(QString::number(oldGrid[i][j]));
+                        p->setAlignment(Qt::AlignCenter);
+                        p->show();
+                        QPropertyAnimation *a = new QPropertyAnimation(p, "pos");
+                        a->setDuration(100);
+                        a->setStartValue(QPoint(15 + j * 105, 15 + i * 105));
+                        // Heuristic target calculation for sliding effect
+                        int tj = j, ti = i;
+                        if (dir == Direction::Left) tj = 0; else if (dir == Direction::Right) tj = Config::M-1;
+                        else if (dir == Direction::Up) ti = 0; else if (dir == Direction::Down) ti = Config::N-1;
+                        a->setEndValue(QPoint(15 + tj * 105, 15 + ti * 105));
+                        connect(a, &QPropertyAnimation::finished, p, &QLabel::deleteLater);
+                        a->start(QAbstractAnimation::DeleteWhenStopped);
+                    }
+                }
+            }
+            resetHardModeTimer();
+            QTimer::singleShot(110, this, &MainWindow::updateUI);
+        }
+    }
 }
 
 bool MainWindow::event(QEvent *event)
@@ -298,6 +331,16 @@ bool MainWindow::event(QEvent *event)
         }
     }
     return QWidget::event(event);
+}
+
+void MainWindow::makeRandomMove()
+{
+    if (m_isGameOver || m_mode != GameMode::Hard) return;
+    std::vector<Direction> dirs = {Direction::Left, Direction::Right, Direction::Up, Direction::Down};
+    std::shuffle(dirs.begin(), dirs.end(), std::default_random_engine(std::chrono::system_clock::now().time_since_epoch().count()));
+    for (Direction d : dirs) {
+        if (m_engine.move(d)) { resetHardModeTimer(); updateUI(); return; }
+    }
 }
 
 QString MainWindow::getTileStyle(int value)
