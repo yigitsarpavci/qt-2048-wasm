@@ -1,39 +1,54 @@
-# CmpE 230 - Assignment 3: 2048 Game
+# 🎮 Qt 2048 WebAssembly 
 
-## Project Overview
-This project is an implementation of the 2048 puzzle game using the Qt 6 framework. It features a robust grid-based movement engine, multiple game modes, and persistent high-score tracking. The application is designed to be cross-platform and is optimized for WebAssembly (WASM).
+![Qt6](https://img.shields.io/badge/Qt-6.x-41CD52?logo=qt&logoColor=white) ![C++](https://img.shields.io/badge/C++-17-00599C?logo=c%2B%2B&logoColor=white) ![WASM](https://img.shields.io/badge/WebAssembly-WASM-654FF0?logo=webassembly&logoColor=white) ![License](https://img.shields.io/badge/License-MIT-yellow.svg)
 
-## Authors
-- **Yiğit Sarp Avcı** (2023400048)
-- **Doğukan Sungu** (2023400210)
+A high-performance, cross-platform implementation of the 2048 puzzle game, engineered with **C++17** and the **Qt 6** framework. This project demonstrates advanced systems programming concepts, including directional grid merging algorithms, infinite state-history management for undos, and cross-compilation for modern browsers via **WebAssembly**.
 
-## Features
-- **Game Modes**: 
-  - **Normal**: Standard 2048 gameplay.
-  - **Unlimited**: Play beyond the target tile value.
-  - **Hard Mode**: A 5-second timer forces a random move upon timeout.
-- **Undo Functionality**: Unlimited undo support via state history snapshots.
-- **Responsive Design**: Fluid UI that adapts to window resizing.
-- **Persistent Scoring**: Best score is saved across sessions using local storage.
+---
 
-## Build and Run Instructions
+### 🚀 Live Demo
+**Play in your browser:** [https://yigitsarpavci.github.io/qt-2048-wasm/](https://yigitsarpavci.github.io/qt-2048-wasm/)
 
-### Prerequisites
-- Qt 6.x
-- CMake 3.16 or higher
-- C++17 compliant compiler
+---
 
-### Local Build
+### ✨ Key Features
+
+*   **🎮 Multiple Game Modes:**
+    *   **Normal**: Traditional 2048 goal with target $K$.
+    *   **Unlimited**: Endless play for high-score chasers.
+    *   **Hard Mode**: Intense 5-second countdown penalty (random move on timeout).
+*   **⏪ Infinite Undo History:** Revert to any state since the start of the session using a deep-copy stack mechanism.
+*   **⚡ High Performance:** Optimized $O(N \cdot M)$ grid processing logic.
+*   **📱 Responsive UI:** Aesthetic parity with the original 2048 game, fully responsive and fluid.
+*   **🌐 Web Deployment:** Integrated CI/CD workflow that compiles and deploys to GitHub Pages automatically.
+
+---
+
+### 🛠 Technical Architecture
+
+- **Engine Logic**: Decoupled `GameEngine` class using `std::vector` for grid representation and `std::stack` for history.
+- **Directional Normalization**: All moves (Up/Down/Right) are mathematically reduced to a "Left" move to minimize code duplication and ensure algorithmic consistency.
+- **Event Filtering**: Low-level key interception to ensure smooth WASM interaction, bypassing browser-level keyboard conflicts.
+
+---
+
+### 🔨 Building from Source
+
 ```bash
-mkdir build
-cd build
+# Clone the repository
+git clone https://github.com/bouncmpe230/2048-2023400048-2023400210
+cd 2048-2023400048-2023400210
+
+# Build with CMake
+mkdir build && cd build
 cmake ..
 cmake --build .
-./2048
 ```
 
-### WebAssembly (WASM) Build
-The project is configured to be compiled with Emscripten for WASM deployment. Refer to the GitHub Actions workflow in `.github/workflows/deploy-wasm.yml` for automated build steps.
+---
 
-## Documentation
-A detailed technical report including class descriptions, merging strategy, and implementation details is available in `report.pdf`.
+### 📄 Documentation
+Detailed technical implementation, class diagrams, and signal-slot mapping can be found in the [Project Report (PDF)](./report.pdf).
+
+---
+*Developed by Yiğit Sarp Avcı & Doğukan Sungu*
