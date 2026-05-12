@@ -124,3 +124,4 @@ private:
 
 #endif // MAINWINDOW_H
 // v1.3: UI Polish
+// v1.4: UX
