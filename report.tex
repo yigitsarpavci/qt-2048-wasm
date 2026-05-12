@@ -1,0 +1,81 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{geometry}
+\geometry{margin=1in}
+\usepackage{hyperref}
+\usepackage{enumitem}
+\usepackage{booktabs}
+\usepackage{float}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{tabularx}
+\usepackage{titlesec}
+
+\titleformat{\section}{\large\bfseries}{\thesection}{1em}{}[\titlerule]
+
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    filecolor=magenta,      
+    urlcolor=cyan,
+}
+
+\title{CmpE 230 - Assignment 3: 2048 Game Report}
+\author{Yi\u{g}it Sarp Avc\i{} (2023400048) \and Do\u{g}ukan Sungu (2023400210)}
+\date{May 12, 2026}
+
+\begin{document}
+
+\maketitle
+
+\section{Project Description}
+This project is an implementation of the 2048 puzzle game using the Qt 6 framework. The application features a grid-based movement system, multiple game modes (Normal, Unlimited, Hard), and a persistent scoring system. The core objective was to create a robust, cross-platform experience targeting WebAssembly (WASM) for browser-based deployment. The implementation strictly follows the rules of 2048, including deterministic merging priority and automated move execution in Hard Mode.
+
+\section{Class and Function Descriptions}
+
+\subsection{GameEngine Class}
+The \texttt{GameEngine} manages the mathematical state of the $N \times M$ grid.
+\begin{itemize}
+    \item \texttt{move(Direction dir)}: Processes the grid based on the input direction, detects changes, and updates the score.
+    \item \texttt{slideAndMerge(vector<int>\& line)}: Implements the row/column merging logic. It ensures that each tile merges at most once per move and prioritizes tiles closer to the boundary.
+    \item \texttt{addRandomTile()}: Spawns a 2 or 4 in a random empty cell using the configured $P$ and $Q$ probabilities.
+    \item \texttt{undo()}: Reverts the grid, current score, and best score to the previous state from the history stack.
+\end{itemize}
+
+\subsection{MainWindow Class}
+The \texttt{MainWindow} handles the graphical representation and user interactions.
+\begin{itemize}
+    \item \texttt{setupUI()}: Dynamically builds the grid labels and control buttons using Qt layouts.
+    \item \texttt{updateUI()}: Synchronizes the visual state with the \texttt{GameEngine} and manages the Win/Loss overlays.
+    \item \texttt{resetHardModeTimer()}: Manages the lifecycle of the 5-second countdown timer for Hard Mode.
+    \item \texttt{makeRandomMove()}: Automatically executes a valid move when the Hard Mode timer expires.
+\end{itemize}
+
+\section{Merging Strategy}
+The merging strategy is implemented line-by-line. When a move is initiated, the tiles are first shifted to remove gaps. The algorithm then scans the tiles from the boundary inward: if two adjacent tiles match, they are merged. The resulting tile is locked for the remainder of that move to prevent double-merging, as per the assignment rules.
+
+\section{Signal and Slot Mechanism}
+The interaction between the UI and logic is handled via Qt's signal-slot system.
+
+\begin{table}[H]
+\centering
+\caption{Key Signal and Slot Mapping}
+\vspace{6pt}
+\begin{tabularx}{\textwidth}{@{}l l X@{}}
+\toprule
+\textbf{Sender} & \textbf{Signal} & \textbf{Receiver / Slot} \\ \midrule
+\texttt{m\_undoBtn} & \texttt{clicked()} & Lambda (calls \texttt{engine.undo()}) \\
+\texttt{m\_restartBtn} & \texttt{clicked()} & Lambda (calls \texttt{engine.reset()}) \\
+\texttt{m\_hardModeTimer} & \texttt{timeout()} & \texttt{makeRandomMove()} \\
+\texttt{m\_displayTimer} & \texttt{timeout()} & Lambda (updates UI timer text) \\ \bottomrule
+\end{tabularx}
+\end{table}
+
+\section{Challenges and Solutions}
+A primary challenge was ensuring keyboard focus in WebAssembly. Standard browser behavior often captures arrow keys for scrolling. This was solved by overriding the \texttt{event()} function to intercept key presses and setting \texttt{Qt::NoFocus} on all buttons to ensure the main window remains the focus for keyboard events.
+
+\section*{AI Usage Declaration}
+In compliance with the course AI Usage Policy, we declare that AI tools (specifically Antigravity) were used strictly as support assistants for build environment configuration and UI styling refinement. The source code and report logic were developed by the authors and are fully understood and explainable. AI was not used to generate the report content itself.
+
+\end{document}
