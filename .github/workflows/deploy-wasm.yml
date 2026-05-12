@@ -22,6 +22,12 @@ jobs:
           version: '6.6.1'
           target: 'desktop'
           arch: 'gcc_64'
+      - name: Install ccache
+        run: sudo apt-get update && sudo apt-get install -y ccache
+      - name: Setup ccache
+        uses: hendrikmuhs/ccache-action@v1.2
+        with:
+          key: ${{ runner.os }}-qt-ccache
       - name: Setup emscripten
         uses: mymindstorm/setup-emsdk@v12
         with:
@@ -30,12 +36,12 @@ jobs:
         run: |
           mkdir -p build
           cd build
+          # Optimize build with ccache
+          export CMAKE_CXX_COMPILER_LAUNCHER=ccache
           # Find host tools and target qt-cmake
           export QT_HOST_PATH=$(find /home/runner/work/ -name "gcc_64" | head -n 1)
           export QT_CMAKE=$(find /home/runner/work/ -name "qt-cmake" | head -n 1)
           chmod +x $QT_CMAKE
-          echo "Using Host Path: $QT_HOST_PATH"
-          echo "Using qt-cmake: $QT_CMAKE"
           # Run official qt-cmake
           $QT_CMAKE .. -DQT_HOST_PATH=$QT_HOST_PATH
           cmake --build . --parallel $(nproc)

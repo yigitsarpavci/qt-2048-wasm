@@ -13,18 +13,16 @@
  * Sets up the game engine, timers for Hard Mode, and the user interface.
  */
 MainWindow::MainWindow(QWidget *parent)
-    : QWidget(parent), m_engine(Config::N, Config::M, Config::K)
+    : QWidget(parent), m_engine(Config::N, Config::M, Config::K), m_animGroup(nullptr)
 {
-    // Ensure the window can capture keyboard events immediately
     setFocusPolicy(Qt::StrongFocus);
     m_engine.setGenerationChances(Config::P, Config::Q);
+    m_animGroup = new QParallelAnimationGroup(this);
     
-    // Hard Mode logic: triggers a random move after 5 seconds of inactivity
     m_hardModeTimer = new QTimer(this);
     m_hardModeTimer->setSingleShot(true);
     connect(m_hardModeTimer, &QTimer::timeout, this, &MainWindow::makeRandomMove);
     
-    // Precision timer for internal time-tracking
     m_displayTimer = new QTimer(this);
     connect(m_displayTimer, &QTimer::timeout, this, [this]() {
         m_timeLeftMs -= 100;
@@ -35,12 +33,13 @@ MainWindow::MainWindow(QWidget *parent)
     });
 
     setupUI();
+    m_lastGrid = m_engine.getGrid();
     updateUI();
 }
 
 /**
  * @brief Constructs the complex UI layout using Qt widgets and layouts.
- * Includes Title, Score boxes, Mode buttons, and the N x M Grid.
+ * Ensures strict adherence to the visual hierarchy described in the project PDF.
  */
 void MainWindow::setupUI()
 {
@@ -52,10 +51,9 @@ void MainWindow::setupUI()
     mainLayout->setContentsMargins(30, 30, 30, 30);
     mainLayout->setSpacing(10);
 
-    // HEADER SECTION: Title and Dynamic Score Boards
     auto *row1 = new QHBoxLayout();
     auto *titleLabel = new QLabel("2048", this);
-    titleLabel->setStyleSheet("color: #776e65; font-size: 80px; font-weight: bold; font-family: 'Clear Sans', 'Helvetica Neue', Arial, sans-serif;");
+    titleLabel->setStyleSheet("color: #776e65; font-size: 80px; font-weight: bold; font-family: 'Clear Sans', Arial, sans-serif;");
     
     auto *scoreContainer = new QHBoxLayout();
     scoreContainer->setSpacing(5);
@@ -96,16 +94,13 @@ void MainWindow::setupUI()
     row1->addLayout(scoreContainer);
     mainLayout->addLayout(row1);
 
-    // ACTION SECTION: Subtitle and 'New Game' Control
     auto *row2 = new QHBoxLayout();
     auto *subtitleLabel = new QLabel("Join the tiles, get to 2048!", this);
     subtitleLabel->setStyleSheet("color: #776e65; font-size: 18px; font-weight: normal;");
     
     m_restartBtn = new QPushButton("New Game", this);
     m_restartBtn->setFixedSize(130, 40);
-    m_restartBtn->setStyleSheet("QPushButton { background-color: #8f7a66; color: #f9f6f2; border-radius: 3px; font-size: 18px; font-weight: bold; }"
-                                "QPushButton:hover { background-color: #9f8a76; }");
-    // CRITICAL: Disable focus on buttons to prevent them from intercepting arrow keys in WASM
+    m_restartBtn->setStyleSheet("background-color: #8f7a66; color: #f9f6f2; border-radius: 3px; font-size: 18px; font-weight: bold;");
     m_restartBtn->setFocusPolicy(Qt::NoFocus);
     
     row2->addWidget(subtitleLabel);
@@ -113,7 +108,6 @@ void MainWindow::setupUI()
     row2->addWidget(m_restartBtn);
     mainLayout->addLayout(row2);
 
-    // MODE SELECTION: Normal, Unlimited, Hard and Undo controls
     auto *row3 = new QHBoxLayout();
     m_normalBtn = new QPushButton("Normal", this);
     m_unlimitedBtn = new QPushButton("Unlimited", this);
@@ -138,10 +132,8 @@ void MainWindow::setupUI()
     m_undoBtn->setStyleSheet(modeStyle);
     m_undoBtn->setFocusPolicy(Qt::NoFocus);
     row3->addWidget(m_undoBtn);
-    
     mainLayout->addLayout(row3);
 
-    // GAME GRID: Container for the tile labels
     m_gridContainer = new QFrame(this);
     m_gridContainer->setFixedSize(440, 440);
     m_gridContainer->setStyleSheet("background-color: #bbada0; border-radius: 6px;");
@@ -152,7 +144,6 @@ void MainWindow::setupUI()
     m_gridLayout->setContentsMargins(15, 15, 15, 15);
     m_gridLayout->setSpacing(15);
     
-    // Initialize labels for each grid cell
     for (int i = 0; i < Config::N; ++i) {
         std::vector<QLabel*> row;
         for (int j = 0; j < Config::M; ++j) {
@@ -165,7 +156,6 @@ void MainWindow::setupUI()
         m_tileLabels.push_back(row);
     }
 
-    // OVERLAY: Displayed on Win/Loss with semi-transparent background
     m_overlay = new QFrame(m_gridContainer);
     m_overlay->setGeometry(0, 0, 440, 440);
     m_overlay->setStyleSheet("background-color: rgba(238, 228, 218, 0.73); border-radius: 6px;");
@@ -187,10 +177,6 @@ void MainWindow::setupUI()
     mainLayout->addWidget(m_gridContainer, 0, Qt::AlignCenter);
     mainLayout->addStretch();
 
-    // Hidden label for compatibility with older UI drafts
-    m_timerLabel = new QLabel(this); m_timerLabel->hide();
-
-    // Connect UI signals to lambda slots for interactive control
     connect(m_undoBtn, &QPushButton::clicked, this, [this]() { if (!m_isGameOver) { m_engine.undo(); resetHardModeTimer(); updateUI(); } });
     connect(m_restartBtn, &QPushButton::clicked, this, [this]() { m_engine.reset(); m_isGameOver = false; m_overlay->hide(); resetHardModeTimer(); updateUI(); });
     connect(tryAgainBtn, &QPushButton::clicked, this, [this]() { m_engine.reset(); m_isGameOver = false; m_overlay->hide(); resetHardModeTimer(); updateUI(); });
@@ -199,9 +185,6 @@ void MainWindow::setupUI()
     connect(m_hardBtn, &QPushButton::clicked, this, [this]() { m_mode = GameMode::Hard; resetHardModeTimer(); updateUI(); });
 }
 
-/**
- * @brief Resets or stops the Hard Mode countdown timer based on the current state.
- */
 void MainWindow::resetHardModeTimer()
 {
     if (m_mode == GameMode::Hard && !m_isGameOver) {
@@ -215,23 +198,20 @@ void MainWindow::resetHardModeTimer()
     }
 }
 
-/**
- * @brief Synchronizes the visual labels with the GameEngine's state.
- * Handles Win/Loss condition displays and mode-specific color highlighting.
- */
 void MainWindow::updateUI()
 {
-    const auto& grid = m_engine.getGrid();
+    const auto& currentGrid = m_engine.getGrid();
     for (int i = 0; i < Config::N; ++i) {
         for (int j = 0; j < Config::M; ++j) {
-            int val = grid[i][j];
+            int val = currentGrid[i][j];
             m_tileLabels[i][j]->setText(val == 0 ? "" : QString::number(val));
             m_tileLabels[i][j]->setStyleSheet(getTileStyle(val));
+            if (m_lastGrid[i][j] == 0 && val != 0) animatePopIn(i, j);
         }
     }
+    m_lastGrid = currentGrid;
     m_scoreLabel->setText(QString::number(m_engine.getScore()));
     
-    // Persistent Best Score handling
     QSettings settings("BounCmpE230", "2048");
     int currentBest = settings.value("bestScore", 0).toInt();
     if (m_engine.getBestScore() > currentBest) {
@@ -240,14 +220,12 @@ void MainWindow::updateUI()
     }
     m_bestScoreLabel->setText(QString::number(currentBest));
 
-    // Highlight active mode button
     QString activeStyle = "background-color: #776e65; color: white;";
     QString inactiveStyle = "background-color: #8f7a66; color: #f9f6f2;";
     m_normalBtn->setStyleSheet(m_mode == GameMode::Normal ? activeStyle : inactiveStyle);
     m_unlimitedBtn->setStyleSheet(m_mode == GameMode::Unlimited ? activeStyle : inactiveStyle);
     m_hardBtn->setStyleSheet(m_mode == GameMode::Hard ? activeStyle : inactiveStyle);
 
-    // Check game termination conditions
     if (!m_isGameOver) {
         if (m_engine.hasWon() && m_mode == GameMode::Normal) {
             m_isGameOver = true;
@@ -262,39 +240,38 @@ void MainWindow::updateUI()
         }
     }
     m_undoBtn->setEnabled(!m_isGameOver);
-    
-    // Disable mode buttons if the game has started (score > 0 or history not empty)
     bool gameStarted = m_engine.getScore() > 0 || m_engine.hasHistory();
     m_normalBtn->setEnabled(!gameStarted && !m_isGameOver);
     m_unlimitedBtn->setEnabled(!gameStarted && !m_isGameOver);
     m_hardBtn->setEnabled(!gameStarted && !m_isGameOver);
 }
 
-/**
- * @brief Executes a random valid move. Used for Hard Mode's automated penalty.
- */
+void MainWindow::animatePopIn(int row, int col)
+{
+    auto *label = m_tileLabels[row][col];
+    auto *anim = new QPropertyAnimation(label, "geometry");
+    anim->setDuration(200);
+    QRect rect = label->geometry();
+    anim->setStartValue(QRect(rect.center(), QSize(0,0)));
+    anim->setEndValue(rect);
+    anim->setEasingCurve(QEasingCurve::OutBack);
+    anim->start(QAbstractAnimation::DeleteWhenStopped);
+}
+
 void MainWindow::makeRandomMove()
 {
     if (m_isGameOver || m_mode != GameMode::Hard) return;
-    
-    // PDF Compliance: "Forces a random move". 
-    // We must try directions until one actually changes the grid.
     std::vector<Direction> dirs = {Direction::Left, Direction::Right, Direction::Up, Direction::Down};
     std::shuffle(dirs.begin(), dirs.end(), std::default_random_engine(std::chrono::system_clock::now().time_since_epoch().count()));
-    
     for (Direction d : dirs) {
         if (m_engine.move(d)) {
-            resetHardModeTimer(); 
+            resetHardModeTimer();
             updateUI();
             return;
         }
     }
-    // If no moves are possible, handleMoveResult will eventually be called by regular logic
 }
 
-/**
- * @brief Handles keyboard input for movement, undo, and restart.
- */
 void MainWindow::keyPressEvent(QKeyEvent *event)
 {
     if (m_isGameOver && event->key() != Qt::Key_R) return;
@@ -310,38 +287,26 @@ void MainWindow::keyPressEvent(QKeyEvent *event)
     if (moved) { resetHardModeTimer(); updateUI(); }
 }
 
-/**
- * @brief Low-level event filter to capture navigation keys before the browser.
- * This is essential for WebAssembly (WASM) compatibility.
- */
 bool MainWindow::event(QEvent *event)
 {
-    // Low-level keyboard interception for WebAssembly.
-    // This prevents the browser from consuming navigation keys (Arrows/Space) 
-    // for scrolling, ensuring a smooth native-like gameplay experience.
     if (event->type() == QEvent::KeyPress) {
         QKeyEvent *ke = static_cast<QKeyEvent *>(event);
         if (ke->key() == Qt::Key_Left || ke->key() == Qt::Key_Right || 
             ke->key() == Qt::Key_Up || ke->key() == Qt::Key_Down) {
             keyPressEvent(ke);
-            return true; // Consume event to prevent browser scrolling
+            return true;
         }
     }
     return QWidget::event(event);
 }
 
-/**
- * @brief Maps tile values to their specific CSS styles (colors and fonts).
- */
 QString MainWindow::getTileStyle(int value)
 {
     QString base = "border-radius: 3px; font-weight: bold; font-family: 'Clear Sans', Arial, sans-serif; ";
     if (value == 0) return base + "background-color: #cdc1b4;";
-    
     QString color = (value <= 4) ? "#776e65" : "#f9f6f2";
     QString bgColor;
     int fontSize = 35;
-
     switch (value) {
         case 2:    bgColor = "#eee4da"; break;
         case 4:    bgColor = "#ede0c8"; break;
@@ -356,6 +321,5 @@ QString MainWindow::getTileStyle(int value)
         case 2048: bgColor = "#edc22e"; fontSize = 25; break;
         default:   bgColor = "#3c3a32"; fontSize = 20; break;
     }
-
     return base + QString("background-color: %1; color: %2; font-size: %3px;").arg(bgColor, color).arg(fontSize);
 }

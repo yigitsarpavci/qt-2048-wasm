@@ -7,6 +7,11 @@
 #include <QKeyEvent>
 #include <QTimer>
 #include <vector>
+#include <QPropertyAnimation>
+#include <QParallelAnimationGroup>
+#include <QGraphicsOpacityEffect>
+#include <QSequentialAnimationGroup>
+#include <QPointer>
 #include "gameengine.h"
 #include "config.h"
 
@@ -27,6 +32,20 @@ private:
     void makeRandomMove();
     void resetHardModeTimer();
     QString getTileStyle(int value);
+
+    /**
+     * @brief Animates tiles from their previous positions to current state.
+     * Uses QParallelAnimationGroup for simultaneous movement effects.
+     */
+    void animateMove(const std::vector<std::vector<int>>& oldGrid);
+
+    /**
+     * @brief Creates a pop-in effect for newly generated tiles.
+     */
+    void animatePopIn(int row, int col);
+
+    std::vector<std::vector<int>> m_lastGrid; ///< Stores state for animation delta
+    QParallelAnimationGroup *m_animGroup;     ///< Manages concurrent animations
 
     GameEngine m_engine;
     QTimer *m_hardModeTimer;
