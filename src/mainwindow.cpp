@@ -4,6 +4,7 @@
 #include <QMessageBox>
 #include <QApplication>
 #include <QSettings>
+#include <chrono>
 #include <algorithm>
 #include <random>
 
@@ -274,7 +275,7 @@ void MainWindow::updateUI()
  */
 void MainWindow::makeRandomMove()
 {
-    if (!m_gameActive || m_mode != GameMode::Hard) return;
+    if (m_isGameOver || m_mode != GameMode::Hard) return;
     
     // PDF Compliance: "Forces a random move". 
     // We must try directions until one actually changes the grid.
@@ -283,7 +284,8 @@ void MainWindow::makeRandomMove()
     
     for (Direction d : dirs) {
         if (m_engine.move(d)) {
-            handleMoveResult();
+            resetHardModeTimer(); 
+            updateUI();
             return;
         }
     }
