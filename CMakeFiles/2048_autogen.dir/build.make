@@ -68,8 +68,8 @@ include CMakeFiles/2048_autogen.dir/progress.make
 
 CMakeFiles/2048_autogen: 2048_autogen/timestamp
 
-2048_autogen/timestamp: /home/runner/work/qt-2048-wasm/Qt/6.6.1/gcc_64/./libexec/moc
-2048_autogen/timestamp: /home/runner/work/qt-2048-wasm/Qt/6.6.1/gcc_64/./libexec/uic
+2048_autogen/timestamp: /home/runner/work/qt-2048-wasm/qt-2048-wasm/Qt/6.6.1/gcc_64/./libexec/moc
+2048_autogen/timestamp: /home/runner/work/qt-2048-wasm/qt-2048-wasm/Qt/6.6.1/gcc_64/./libexec/uic
 2048_autogen/timestamp: CMakeFiles/2048_autogen.dir/compiler_depend.ts
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --blue --bold --progress-dir=/home/runner/work/qt-2048-wasm/qt-2048-wasm/build_clean/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Automatic MOC and UIC for target 2048"
 	/usr/local/bin/cmake -E cmake_autogen /home/runner/work/qt-2048-wasm/qt-2048-wasm/build_clean/CMakeFiles/2048_autogen.dir/AutogenInfo.json Release

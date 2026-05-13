@@ -3,7 +3,7 @@ set(CMAKE_HOST_SYSTEM_NAME "Linux")
 set(CMAKE_HOST_SYSTEM_VERSION "6.17.0-1010-azure")
 set(CMAKE_HOST_SYSTEM_PROCESSOR "x86_64")
 
-include("/home/runner/work/qt-2048-wasm/Qt/6.6.1/wasm_singlethread/lib/cmake/Qt6/qt.toolchain.cmake")
+include("/home/runner/work/qt-2048-wasm/qt-2048-wasm/Qt/6.6.1/wasm_singlethread/lib/cmake/Qt6/qt.toolchain.cmake")
 
 set(CMAKE_SYSTEM "Emscripten-1")
 set(CMAKE_SYSTEM_NAME "Emscripten")

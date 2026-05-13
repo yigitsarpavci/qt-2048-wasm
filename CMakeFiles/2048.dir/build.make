@@ -77,60 +77,60 @@ CMakeFiles/2048.dir/2048_autogen/mocs_compilation.cpp.o: CMakeFiles/2048.dir/inc
 CMakeFiles/2048.dir/2048_autogen/mocs_compilation.cpp.o: 2048_autogen/mocs_compilation.cpp
 CMakeFiles/2048.dir/2048_autogen/mocs_compilation.cpp.o: CMakeFiles/2048.dir/compiler_depend.ts
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/runner/work/qt-2048-wasm/qt-2048-wasm/build_clean/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/2048.dir/2048_autogen/mocs_compilation.cpp.o"
-	/home/runner/work/_temp/65ada521-5a37-4602-820e-3a76c9d6669e/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/2048.dir/2048_autogen/mocs_compilation.cpp.o -MF CMakeFiles/2048.dir/2048_autogen/mocs_compilation.cpp.o.d -o CMakeFiles/2048.dir/2048_autogen/mocs_compilation.cpp.o -c /home/runner/work/qt-2048-wasm/qt-2048-wasm/build_clean/2048_autogen/mocs_compilation.cpp
+	ccache /home/runner/work/_temp/773a8b2e-258d-4433-ba37-3145bb45b01a/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/2048.dir/2048_autogen/mocs_compilation.cpp.o -MF CMakeFiles/2048.dir/2048_autogen/mocs_compilation.cpp.o.d -o CMakeFiles/2048.dir/2048_autogen/mocs_compilation.cpp.o -c /home/runner/work/qt-2048-wasm/qt-2048-wasm/build_clean/2048_autogen/mocs_compilation.cpp
 
 CMakeFiles/2048.dir/2048_autogen/mocs_compilation.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/2048.dir/2048_autogen/mocs_compilation.cpp.i"
-	/home/runner/work/_temp/65ada521-5a37-4602-820e-3a76c9d6669e/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/runner/work/qt-2048-wasm/qt-2048-wasm/build_clean/2048_autogen/mocs_compilation.cpp > CMakeFiles/2048.dir/2048_autogen/mocs_compilation.cpp.i
+	/home/runner/work/_temp/773a8b2e-258d-4433-ba37-3145bb45b01a/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/runner/work/qt-2048-wasm/qt-2048-wasm/build_clean/2048_autogen/mocs_compilation.cpp > CMakeFiles/2048.dir/2048_autogen/mocs_compilation.cpp.i
 
 CMakeFiles/2048.dir/2048_autogen/mocs_compilation.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/2048.dir/2048_autogen/mocs_compilation.cpp.s"
-	/home/runner/work/_temp/65ada521-5a37-4602-820e-3a76c9d6669e/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/runner/work/qt-2048-wasm/qt-2048-wasm/build_clean/2048_autogen/mocs_compilation.cpp -o CMakeFiles/2048.dir/2048_autogen/mocs_compilation.cpp.s
+	/home/runner/work/_temp/773a8b2e-258d-4433-ba37-3145bb45b01a/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/runner/work/qt-2048-wasm/qt-2048-wasm/build_clean/2048_autogen/mocs_compilation.cpp -o CMakeFiles/2048.dir/2048_autogen/mocs_compilation.cpp.s
 
 CMakeFiles/2048.dir/src/main.cpp.o: CMakeFiles/2048.dir/flags.make
 CMakeFiles/2048.dir/src/main.cpp.o: CMakeFiles/2048.dir/includes_CXX.rsp
 CMakeFiles/2048.dir/src/main.cpp.o: /home/runner/work/qt-2048-wasm/qt-2048-wasm/src/main.cpp
 CMakeFiles/2048.dir/src/main.cpp.o: CMakeFiles/2048.dir/compiler_depend.ts
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/runner/work/qt-2048-wasm/qt-2048-wasm/build_clean/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/2048.dir/src/main.cpp.o"
-	/home/runner/work/_temp/65ada521-5a37-4602-820e-3a76c9d6669e/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/2048.dir/src/main.cpp.o -MF CMakeFiles/2048.dir/src/main.cpp.o.d -o CMakeFiles/2048.dir/src/main.cpp.o -c /home/runner/work/qt-2048-wasm/qt-2048-wasm/src/main.cpp
+	ccache /home/runner/work/_temp/773a8b2e-258d-4433-ba37-3145bb45b01a/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/2048.dir/src/main.cpp.o -MF CMakeFiles/2048.dir/src/main.cpp.o.d -o CMakeFiles/2048.dir/src/main.cpp.o -c /home/runner/work/qt-2048-wasm/qt-2048-wasm/src/main.cpp
 
 CMakeFiles/2048.dir/src/main.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/2048.dir/src/main.cpp.i"
-	/home/runner/work/_temp/65ada521-5a37-4602-820e-3a76c9d6669e/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/runner/work/qt-2048-wasm/qt-2048-wasm/src/main.cpp > CMakeFiles/2048.dir/src/main.cpp.i
+	/home/runner/work/_temp/773a8b2e-258d-4433-ba37-3145bb45b01a/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/runner/work/qt-2048-wasm/qt-2048-wasm/src/main.cpp > CMakeFiles/2048.dir/src/main.cpp.i
 
 CMakeFiles/2048.dir/src/main.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/2048.dir/src/main.cpp.s"
-	/home/runner/work/_temp/65ada521-5a37-4602-820e-3a76c9d6669e/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/runner/work/qt-2048-wasm/qt-2048-wasm/src/main.cpp -o CMakeFiles/2048.dir/src/main.cpp.s
+	/home/runner/work/_temp/773a8b2e-258d-4433-ba37-3145bb45b01a/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/runner/work/qt-2048-wasm/qt-2048-wasm/src/main.cpp -o CMakeFiles/2048.dir/src/main.cpp.s
 
 CMakeFiles/2048.dir/src/mainwindow.cpp.o: CMakeFiles/2048.dir/flags.make
 CMakeFiles/2048.dir/src/mainwindow.cpp.o: CMakeFiles/2048.dir/includes_CXX.rsp
 CMakeFiles/2048.dir/src/mainwindow.cpp.o: /home/runner/work/qt-2048-wasm/qt-2048-wasm/src/mainwindow.cpp
 CMakeFiles/2048.dir/src/mainwindow.cpp.o: CMakeFiles/2048.dir/compiler_depend.ts
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/runner/work/qt-2048-wasm/qt-2048-wasm/build_clean/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/2048.dir/src/mainwindow.cpp.o"
-	/home/runner/work/_temp/65ada521-5a37-4602-820e-3a76c9d6669e/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/2048.dir/src/mainwindow.cpp.o -MF CMakeFiles/2048.dir/src/mainwindow.cpp.o.d -o CMakeFiles/2048.dir/src/mainwindow.cpp.o -c /home/runner/work/qt-2048-wasm/qt-2048-wasm/src/mainwindow.cpp
+	ccache /home/runner/work/_temp/773a8b2e-258d-4433-ba37-3145bb45b01a/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/2048.dir/src/mainwindow.cpp.o -MF CMakeFiles/2048.dir/src/mainwindow.cpp.o.d -o CMakeFiles/2048.dir/src/mainwindow.cpp.o -c /home/runner/work/qt-2048-wasm/qt-2048-wasm/src/mainwindow.cpp
 
 CMakeFiles/2048.dir/src/mainwindow.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/2048.dir/src/mainwindow.cpp.i"
-	/home/runner/work/_temp/65ada521-5a37-4602-820e-3a76c9d6669e/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/runner/work/qt-2048-wasm/qt-2048-wasm/src/mainwindow.cpp > CMakeFiles/2048.dir/src/mainwindow.cpp.i
+	/home/runner/work/_temp/773a8b2e-258d-4433-ba37-3145bb45b01a/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/runner/work/qt-2048-wasm/qt-2048-wasm/src/mainwindow.cpp > CMakeFiles/2048.dir/src/mainwindow.cpp.i
 
 CMakeFiles/2048.dir/src/mainwindow.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/2048.dir/src/mainwindow.cpp.s"
-	/home/runner/work/_temp/65ada521-5a37-4602-820e-3a76c9d6669e/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/runner/work/qt-2048-wasm/qt-2048-wasm/src/mainwindow.cpp -o CMakeFiles/2048.dir/src/mainwindow.cpp.s
+	/home/runner/work/_temp/773a8b2e-258d-4433-ba37-3145bb45b01a/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/runner/work/qt-2048-wasm/qt-2048-wasm/src/mainwindow.cpp -o CMakeFiles/2048.dir/src/mainwindow.cpp.s
 
 CMakeFiles/2048.dir/src/gameengine.cpp.o: CMakeFiles/2048.dir/flags.make
 CMakeFiles/2048.dir/src/gameengine.cpp.o: CMakeFiles/2048.dir/includes_CXX.rsp
 CMakeFiles/2048.dir/src/gameengine.cpp.o: /home/runner/work/qt-2048-wasm/qt-2048-wasm/src/gameengine.cpp
 CMakeFiles/2048.dir/src/gameengine.cpp.o: CMakeFiles/2048.dir/compiler_depend.ts
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/runner/work/qt-2048-wasm/qt-2048-wasm/build_clean/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object CMakeFiles/2048.dir/src/gameengine.cpp.o"
-	/home/runner/work/_temp/65ada521-5a37-4602-820e-3a76c9d6669e/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/2048.dir/src/gameengine.cpp.o -MF CMakeFiles/2048.dir/src/gameengine.cpp.o.d -o CMakeFiles/2048.dir/src/gameengine.cpp.o -c /home/runner/work/qt-2048-wasm/qt-2048-wasm/src/gameengine.cpp
+	ccache /home/runner/work/_temp/773a8b2e-258d-4433-ba37-3145bb45b01a/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/2048.dir/src/gameengine.cpp.o -MF CMakeFiles/2048.dir/src/gameengine.cpp.o.d -o CMakeFiles/2048.dir/src/gameengine.cpp.o -c /home/runner/work/qt-2048-wasm/qt-2048-wasm/src/gameengine.cpp
 
 CMakeFiles/2048.dir/src/gameengine.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/2048.dir/src/gameengine.cpp.i"
-	/home/runner/work/_temp/65ada521-5a37-4602-820e-3a76c9d6669e/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/runner/work/qt-2048-wasm/qt-2048-wasm/src/gameengine.cpp > CMakeFiles/2048.dir/src/gameengine.cpp.i
+	/home/runner/work/_temp/773a8b2e-258d-4433-ba37-3145bb45b01a/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/runner/work/qt-2048-wasm/qt-2048-wasm/src/gameengine.cpp > CMakeFiles/2048.dir/src/gameengine.cpp.i
 
 CMakeFiles/2048.dir/src/gameengine.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/2048.dir/src/gameengine.cpp.s"
-	/home/runner/work/_temp/65ada521-5a37-4602-820e-3a76c9d6669e/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/runner/work/qt-2048-wasm/qt-2048-wasm/src/gameengine.cpp -o CMakeFiles/2048.dir/src/gameengine.cpp.s
+	/home/runner/work/_temp/773a8b2e-258d-4433-ba37-3145bb45b01a/emsdk-main/upstream/emscripten/em++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/runner/work/qt-2048-wasm/qt-2048-wasm/src/gameengine.cpp -o CMakeFiles/2048.dir/src/gameengine.cpp.s
 
 # Object files for target 2048
 2048_OBJECTS = \
@@ -141,49 +141,49 @@ CMakeFiles/2048.dir/src/gameengine.cpp.s: cmake_force
 
 # External object files for target 2048
 2048_EXTERNAL_OBJECTS = \
-"/home/runner/work/qt-2048-wasm/Qt/6.6.1/wasm_singlethread/plugins/imageformats/objects-Release/QGifPlugin_init/QGifPlugin_init.cpp.o" \
-"/home/runner/work/qt-2048-wasm/Qt/6.6.1/wasm_singlethread/plugins/imageformats/objects-Release/QICOPlugin_init/QICOPlugin_init.cpp.o" \
-"/home/runner/work/qt-2048-wasm/Qt/6.6.1/wasm_singlethread/plugins/imageformats/objects-Release/QJpegPlugin_init/QJpegPlugin_init.cpp.o" \
-"/home/runner/work/qt-2048-wasm/Qt/6.6.1/wasm_singlethread/plugins/iconengines/objects-Release/QSvgIconPlugin_init/QSvgIconPlugin_init.cpp.o" \
-"/home/runner/work/qt-2048-wasm/Qt/6.6.1/wasm_singlethread/plugins/imageformats/objects-Release/QSvgPlugin_init/QSvgPlugin_init.cpp.o" \
-"/home/runner/work/qt-2048-wasm/Qt/6.6.1/wasm_singlethread/plugins/platforms/objects-Release/QWasmIntegrationPlugin_init/QWasmIntegrationPlugin_init.cpp.o"
+"/home/runner/work/qt-2048-wasm/qt-2048-wasm/Qt/6.6.1/wasm_singlethread/plugins/imageformats/objects-Release/QGifPlugin_init/QGifPlugin_init.cpp.o" \
+"/home/runner/work/qt-2048-wasm/qt-2048-wasm/Qt/6.6.1/wasm_singlethread/plugins/imageformats/objects-Release/QICOPlugin_init/QICOPlugin_init.cpp.o" \
+"/home/runner/work/qt-2048-wasm/qt-2048-wasm/Qt/6.6.1/wasm_singlethread/plugins/imageformats/objects-Release/QJpegPlugin_init/QJpegPlugin_init.cpp.o" \
+"/home/runner/work/qt-2048-wasm/qt-2048-wasm/Qt/6.6.1/wasm_singlethread/plugins/iconengines/objects-Release/QSvgIconPlugin_init/QSvgIconPlugin_init.cpp.o" \
+"/home/runner/work/qt-2048-wasm/qt-2048-wasm/Qt/6.6.1/wasm_singlethread/plugins/imageformats/objects-Release/QSvgPlugin_init/QSvgPlugin_init.cpp.o" \
+"/home/runner/work/qt-2048-wasm/qt-2048-wasm/Qt/6.6.1/wasm_singlethread/plugins/platforms/objects-Release/QWasmIntegrationPlugin_init/QWasmIntegrationPlugin_init.cpp.o"
 
 2048.js: CMakeFiles/2048.dir/2048_autogen/mocs_compilation.cpp.o
 2048.js: CMakeFiles/2048.dir/src/main.cpp.o
 2048.js: CMakeFiles/2048.dir/src/mainwindow.cpp.o
 2048.js: CMakeFiles/2048.dir/src/gameengine.cpp.o
-2048.js: /home/runner/work/qt-2048-wasm/Qt/6.6.1/wasm_singlethread/plugins/imageformats/objects-Release/QGifPlugin_init/QGifPlugin_init.cpp.o
-2048.js: /home/runner/work/qt-2048-wasm/Qt/6.6.1/wasm_singlethread/plugins/imageformats/objects-Release/QICOPlugin_init/QICOPlugin_init.cpp.o
-2048.js: /home/runner/work/qt-2048-wasm/Qt/6.6.1/wasm_singlethread/plugins/imageformats/objects-Release/QJpegPlugin_init/QJpegPlugin_init.cpp.o
-2048.js: /home/runner/work/qt-2048-wasm/Qt/6.6.1/wasm_singlethread/plugins/iconengines/objects-Release/QSvgIconPlugin_init/QSvgIconPlugin_init.cpp.o
-2048.js: /home/runner/work/qt-2048-wasm/Qt/6.6.1/wasm_singlethread/plugins/imageformats/objects-Release/QSvgPlugin_init/QSvgPlugin_init.cpp.o
-2048.js: /home/runner/work/qt-2048-wasm/Qt/6.6.1/wasm_singlethread/plugins/platforms/objects-Release/QWasmIntegrationPlugin_init/QWasmIntegrationPlugin_init.cpp.o
+2048.js: /home/runner/work/qt-2048-wasm/qt-2048-wasm/Qt/6.6.1/wasm_singlethread/plugins/imageformats/objects-Release/QGifPlugin_init/QGifPlugin_init.cpp.o
+2048.js: /home/runner/work/qt-2048-wasm/qt-2048-wasm/Qt/6.6.1/wasm_singlethread/plugins/imageformats/objects-Release/QICOPlugin_init/QICOPlugin_init.cpp.o
+2048.js: /home/runner/work/qt-2048-wasm/qt-2048-wasm/Qt/6.6.1/wasm_singlethread/plugins/imageformats/objects-Release/QJpegPlugin_init/QJpegPlugin_init.cpp.o
+2048.js: /home/runner/work/qt-2048-wasm/qt-2048-wasm/Qt/6.6.1/wasm_singlethread/plugins/iconengines/objects-Release/QSvgIconPlugin_init/QSvgIconPlugin_init.cpp.o
+2048.js: /home/runner/work/qt-2048-wasm/qt-2048-wasm/Qt/6.6.1/wasm_singlethread/plugins/imageformats/objects-Release/QSvgPlugin_init/QSvgPlugin_init.cpp.o
+2048.js: /home/runner/work/qt-2048-wasm/qt-2048-wasm/Qt/6.6.1/wasm_singlethread/plugins/platforms/objects-Release/QWasmIntegrationPlugin_init/QWasmIntegrationPlugin_init.cpp.o
 2048.js: CMakeFiles/2048.dir/build.make
-2048.js: /home/runner/work/qt-2048-wasm/Qt/6.6.1/wasm_singlethread/lib/objects-Release/Widgets_resources_1/.rcc/qrc_qstyle.cpp.o
-2048.js: /home/runner/work/qt-2048-wasm/Qt/6.6.1/wasm_singlethread/lib/objects-Release/Widgets_resources_2/.rcc/qrc_qstyle1.cpp.o
-2048.js: /home/runner/work/qt-2048-wasm/Qt/6.6.1/wasm_singlethread/lib/objects-Release/Widgets_resources_3/.rcc/qrc_qmessagebox.cpp.o
-2048.js: /home/runner/work/qt-2048-wasm/Qt/6.6.1/wasm_singlethread/lib/objects-Release/QWasmIntegrationPlugin_resources_1/.rcc/qrc_wasmfonts.cpp.o
-2048.js: /home/runner/work/qt-2048-wasm/Qt/6.6.1/wasm_singlethread/lib/objects-Release/QWasmIntegrationPlugin_resources_2/.rcc/qrc_wasmwindow.cpp.o
-2048.js: /home/runner/work/qt-2048-wasm/Qt/6.6.1/wasm_singlethread/lib/objects-Release/Gui_resources_1/.rcc/qrc_qpdf.cpp.o
-2048.js: /home/runner/work/qt-2048-wasm/Qt/6.6.1/wasm_singlethread/lib/objects-Release/Gui_resources_2/.rcc/qrc_gui_shaders.cpp.o
-2048.js: /home/runner/work/qt-2048-wasm/Qt/6.6.1/wasm_singlethread/lib/libQt6Core.a
-2048.js: /home/runner/work/qt-2048-wasm/Qt/6.6.1/wasm_singlethread/lib/libQt6Widgets.a
-2048.js: /home/runner/work/qt-2048-wasm/Qt/6.6.1/wasm_singlethread/./plugins/imageformats/libqgif.a
-2048.js: /home/runner/work/qt-2048-wasm/Qt/6.6.1/wasm_singlethread/./plugins/imageformats/libqico.a
-2048.js: /home/runner/work/qt-2048-wasm/Qt/6.6.1/wasm_singlethread/./plugins/imageformats/libqjpeg.a
-2048.js: /home/runner/work/qt-2048-wasm/Qt/6.6.1/wasm_singlethread/./plugins/iconengines/libqsvgicon.a
-2048.js: /home/runner/work/qt-2048-wasm/Qt/6.6.1/wasm_singlethread/./plugins/imageformats/libqsvg.a
-2048.js: /home/runner/work/qt-2048-wasm/Qt/6.6.1/wasm_singlethread/./plugins/platforms/libqwasm.a
-2048.js: /home/runner/work/qt-2048-wasm/Qt/6.6.1/wasm_singlethread/lib/libQt6BundledLibjpeg.a
-2048.js: /home/runner/work/qt-2048-wasm/Qt/6.6.1/wasm_singlethread/lib/libQt6Svg.a
-2048.js: /home/runner/work/qt-2048-wasm/Qt/6.6.1/wasm_singlethread/lib/libQt6OpenGL.a
-2048.js: /home/runner/work/qt-2048-wasm/Qt/6.6.1/wasm_singlethread/lib/libQt6Gui.a
-2048.js: /home/runner/work/qt-2048-wasm/Qt/6.6.1/wasm_singlethread/lib/libQt6BundledHarfbuzz.a
-2048.js: /home/runner/work/qt-2048-wasm/Qt/6.6.1/wasm_singlethread/lib/libQt6BundledFreetype.a
-2048.js: /home/runner/work/qt-2048-wasm/Qt/6.6.1/wasm_singlethread/lib/libQt6BundledLibpng.a
-2048.js: /home/runner/work/qt-2048-wasm/Qt/6.6.1/wasm_singlethread/lib/libQt6Core.a
-2048.js: /home/runner/work/qt-2048-wasm/Qt/6.6.1/wasm_singlethread/lib/libQt6BundledZLIB.a
-2048.js: /home/runner/work/qt-2048-wasm/Qt/6.6.1/wasm_singlethread/lib/libQt6BundledPcre2.a
+2048.js: /home/runner/work/qt-2048-wasm/qt-2048-wasm/Qt/6.6.1/wasm_singlethread/lib/objects-Release/Widgets_resources_1/.rcc/qrc_qstyle.cpp.o
+2048.js: /home/runner/work/qt-2048-wasm/qt-2048-wasm/Qt/6.6.1/wasm_singlethread/lib/objects-Release/Widgets_resources_2/.rcc/qrc_qstyle1.cpp.o
+2048.js: /home/runner/work/qt-2048-wasm/qt-2048-wasm/Qt/6.6.1/wasm_singlethread/lib/objects-Release/Widgets_resources_3/.rcc/qrc_qmessagebox.cpp.o
+2048.js: /home/runner/work/qt-2048-wasm/qt-2048-wasm/Qt/6.6.1/wasm_singlethread/lib/objects-Release/QWasmIntegrationPlugin_resources_1/.rcc/qrc_wasmfonts.cpp.o
+2048.js: /home/runner/work/qt-2048-wasm/qt-2048-wasm/Qt/6.6.1/wasm_singlethread/lib/objects-Release/QWasmIntegrationPlugin_resources_2/.rcc/qrc_wasmwindow.cpp.o
+2048.js: /home/runner/work/qt-2048-wasm/qt-2048-wasm/Qt/6.6.1/wasm_singlethread/lib/objects-Release/Gui_resources_1/.rcc/qrc_qpdf.cpp.o
+2048.js: /home/runner/work/qt-2048-wasm/qt-2048-wasm/Qt/6.6.1/wasm_singlethread/lib/objects-Release/Gui_resources_2/.rcc/qrc_gui_shaders.cpp.o
+2048.js: /home/runner/work/qt-2048-wasm/qt-2048-wasm/Qt/6.6.1/wasm_singlethread/lib/libQt6Core.a
+2048.js: /home/runner/work/qt-2048-wasm/qt-2048-wasm/Qt/6.6.1/wasm_singlethread/lib/libQt6Widgets.a
+2048.js: /home/runner/work/qt-2048-wasm/qt-2048-wasm/Qt/6.6.1/wasm_singlethread/./plugins/imageformats/libqgif.a
+2048.js: /home/runner/work/qt-2048-wasm/qt-2048-wasm/Qt/6.6.1/wasm_singlethread/./plugins/imageformats/libqico.a
+2048.js: /home/runner/work/qt-2048-wasm/qt-2048-wasm/Qt/6.6.1/wasm_singlethread/./plugins/imageformats/libqjpeg.a
+2048.js: /home/runner/work/qt-2048-wasm/qt-2048-wasm/Qt/6.6.1/wasm_singlethread/./plugins/iconengines/libqsvgicon.a
+2048.js: /home/runner/work/qt-2048-wasm/qt-2048-wasm/Qt/6.6.1/wasm_singlethread/./plugins/imageformats/libqsvg.a
+2048.js: /home/runner/work/qt-2048-wasm/qt-2048-wasm/Qt/6.6.1/wasm_singlethread/./plugins/platforms/libqwasm.a
+2048.js: /home/runner/work/qt-2048-wasm/qt-2048-wasm/Qt/6.6.1/wasm_singlethread/lib/libQt6BundledLibjpeg.a
+2048.js: /home/runner/work/qt-2048-wasm/qt-2048-wasm/Qt/6.6.1/wasm_singlethread/lib/libQt6Svg.a
+2048.js: /home/runner/work/qt-2048-wasm/qt-2048-wasm/Qt/6.6.1/wasm_singlethread/lib/libQt6OpenGL.a
+2048.js: /home/runner/work/qt-2048-wasm/qt-2048-wasm/Qt/6.6.1/wasm_singlethread/lib/libQt6Gui.a
+2048.js: /home/runner/work/qt-2048-wasm/qt-2048-wasm/Qt/6.6.1/wasm_singlethread/lib/libQt6BundledHarfbuzz.a
+2048.js: /home/runner/work/qt-2048-wasm/qt-2048-wasm/Qt/6.6.1/wasm_singlethread/lib/libQt6BundledFreetype.a
+2048.js: /home/runner/work/qt-2048-wasm/qt-2048-wasm/Qt/6.6.1/wasm_singlethread/lib/libQt6BundledLibpng.a
+2048.js: /home/runner/work/qt-2048-wasm/qt-2048-wasm/Qt/6.6.1/wasm_singlethread/lib/libQt6Core.a
+2048.js: /home/runner/work/qt-2048-wasm/qt-2048-wasm/Qt/6.6.1/wasm_singlethread/lib/libQt6BundledZLIB.a
+2048.js: /home/runner/work/qt-2048-wasm/qt-2048-wasm/Qt/6.6.1/wasm_singlethread/lib/libQt6BundledPcre2.a
 2048.js: CMakeFiles/2048.dir/linkLibs.rsp
 2048.js: CMakeFiles/2048.dir/objects1.rsp
 2048.js: CMakeFiles/2048.dir/link.txt
