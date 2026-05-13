@@ -1,0 +1,93 @@
+name: Deploy 2048 to GitHub Pages
+on:
+  push:
+    branches: [ main ]
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Cache Qt
+        id: cache-qt
+        uses: actions/cache@v4
+        with:
+          path: ${{ github.workspace }}/Qt
+          key: ${{ runner.os }}-qt-6.6.1-wasm-v6
+          
+      - name: Install Host Qt
+        if: steps.cache-qt.outputs.cache-hit != 'true'
+        uses: jurplel/install-qt-action@v3
+        with:
+          version: '6.6.1'
+          target: 'desktop'
+          arch: 'gcc_64'
+          dir: ${{ github.workspace }}
+          
+      - name: Install WASM Qt
+        if: steps.cache-qt.outputs.cache-hit != 'true'
+        uses: jurplel/install-qt-action@v3
+        with:
+          version: '6.6.1'
+          target: 'desktop'
+          arch: 'wasm_singlethread'
+          dir: ${{ github.workspace }}
+          
+      - name: Setup Emscripten
+        uses: mymindstorm/setup-emsdk@v12
+        with:
+          version: '3.1.37'
+          
+      - name: ccache
+        uses: hendrikmuhs/ccache-action@v1.2
+        with:
+          key: ${{ runner.os }}-ccache
+          
+      - name: Build Project
+        run: |
+          mkdir -p build_clean
+          cd build_clean
+          QT_WASM=$(find ${{ github.workspace }} -name "wasm_singlethread" | head -n 1)
+          QT_HOST=$(find ${{ github.workspace }} -name "gcc_64" | head -n 1)
+          export PATH="/usr/lib/ccache:/usr/local/opt/ccache/libexec:$PATH"
+          $QT_WASM/bin/qt-cmake .. -DQT_HOST_PATH=$QT_HOST -DCMAKE_BUILD_TYPE=Release \
+            -DCMAKE_CXX_COMPILER_LAUNCHER=ccache \
+            -DCMAKE_C_COMPILER_LAUNCHER=ccache
+          cmake --build . --parallel $(nproc)
+          
+      - name: Prepare Deployment
+        run: |
+          mkdir -p public
+          rm -rf public/*
+          cp -r build_clean/* public/
+          mv public/2048.html public/index.html || true
+          SHA_SHORT=$(echo ${{ github.sha }} | cut -c1-7)
+          sed -i "s/\([a-zA-Z0-9]*\)\.js/\1\.js?v=${SHA_SHORT}/g" public/index.html
+          sed -i "s/2048\.wasm/2048\.wasm?v=${SHA_SHORT}/g" public/index.html
+          
+      - name: Inject CSS
+        run: |
+          python3 -c "
+          import os
+          css = '''
+          <style>
+            body, html { margin: 0 !important; padding: 0 !important; width: 100vw !important; height: 100vh !important; background-color: #faf8ef !important; display: flex !important; justify-content: center !important; align-items: center !important; overflow: auto !important; }
+            #qt-container { width: 480px !important; height: 700px !important; min-width: 480px !important; min-height: 700px !important; max-width: 480px !important; max-height: 700px !important; box-shadow: 0 15px 50px rgba(0,0,0,0.15) !important; background-color: #faf8ef !important; border-radius: 8px !important; overflow: hidden !important; display: flex !important; justify-content: center !important; align-items: center !important; }
+            canvas { width: 480px !important; height: 700px !important; max-width: 480px !important; max-height: 700px !important; display: block !important; image-rendering: -webkit-optimize-contrast !important; }
+          </style>
+          '''
+          with open('public/index.html', 'r') as f: content = f.read()
+          with open('public/index.html', 'w') as f: f.write(content.replace('</head>', css + '</head>'))
+          "
+
+      - name: Deploy
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./public
+          user_name: 'github-actions[bot]'
+          user_email: 'github-actions[bot]@users.noreply.github.com'
+# v2.0: Optimized
