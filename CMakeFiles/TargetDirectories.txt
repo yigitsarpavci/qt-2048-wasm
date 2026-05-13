@@ -1,0 +1,9 @@
+/home/runner/work/qt-2048-wasm/qt-2048-wasm/build_clean/CMakeFiles/2048.dir
+/home/runner/work/qt-2048-wasm/qt-2048-wasm/build_clean/CMakeFiles/edit_cache.dir
+/home/runner/work/qt-2048-wasm/qt-2048-wasm/build_clean/CMakeFiles/rebuild_cache.dir
+/home/runner/work/qt-2048-wasm/qt-2048-wasm/build_clean/CMakeFiles/list_install_components.dir
+/home/runner/work/qt-2048-wasm/qt-2048-wasm/build_clean/CMakeFiles/install.dir
+/home/runner/work/qt-2048-wasm/qt-2048-wasm/build_clean/CMakeFiles/install/local.dir
+/home/runner/work/qt-2048-wasm/qt-2048-wasm/build_clean/CMakeFiles/install/strip.dir
+/home/runner/work/qt-2048-wasm/qt-2048-wasm/build_clean/CMakeFiles/2048_autogen_timestamp_deps.dir
+/home/runner/work/qt-2048-wasm/qt-2048-wasm/build_clean/CMakeFiles/2048_autogen.dir
