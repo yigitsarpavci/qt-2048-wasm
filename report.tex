@@ -1,0 +1,84 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{geometry}
+\geometry{margin=1in}
+\usepackage{hyperref}
+\usepackage{enumitem}
+\usepackage{booktabs}
+\usepackage{float}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{tabularx}
+\usepackage{titlesec}
+\usepackage{microtype}
+
+\titleformat{\section}{\large\bfseries}{\thesection}{1em}{}[\titlerule]
+
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    filecolor=magenta,      
+    urlcolor=cyan,
+}
+
+\title{CmpE 230 - Assignment 3: 2048 Game System Design and Implementation}
+\author{Yi\u{g}it Sarp Avc\i{} (2023400048) \and Do\u{g}ukan Sungu (2023400210)}
+\date{May 13, 2026}
+
+\begin{document}
+
+\maketitle
+
+\section{Introduction}
+This report documents the design and development of a C++ implementation of the 2048 puzzle game using the Qt 6 framework. The project aims to provide a functional, cross-platform application with a focus on logical separation, consistent input handling, and standard user interface design. The implementation targets both desktop environments and WebAssembly (WASM), demonstrating the use of C++ in cross-platform development.
+
+\section{System Architecture}
+
+\subsection{Architectural Design}
+A primary design requirement was the separation of the game logic from the user interface. We implemented an architecture where the \texttt{GameEngine} remains independent of the UI components. This separation improves code maintainability and allows the core logic to be tested independently of the graphical representation.
+
+\subsection{Logic Layer: GameEngine}
+The \texttt{GameEngine} class manages the internal state of the grid, which is represented by a 2D matrix of \texttt{Tile} structures.
+\begin{itemize}
+    \item \textbf{Configurability:} To comply with requirements, the grid dimensions ($N \times M$), winning tile ($K$), and tile generation probabilities ($P, Q$) are managed via centralized constants.
+    \item \textbf{Movement Logic:} The movement algorithm processes the grid according to the standard rules. A key architectural decision was the implementation of a \textbf{Coordinate Rotation Helper}. Instead of implementing complex loops for each direction, the engine rotates/transforms the grid coordinates so that the merge logic always operates on a normalized horizontal axis. This reduces code complexity and ensures consistent merge behavior across all directions.
+    \item \textbf{Undo System:} The engine maintains an extensive history of game states using a \texttt{GameSnapshot} stack. Each snapshot contains the grid data and scores. To meet the requirement of no practical limit, the system supports up to 100,000 steps.
+    \item \textbf{Initial State:} According to the specification, the session begins with exactly two tiles of value 2, placed in random empty cells.
+\end{itemize}
+
+\subsection{Presentation Layer: MainWindow}
+The \texttt{MainWindow} class handles graphical rendering and user input processing.
+\begin{itemize}
+    \item \textbf{Layout Management:} A \texttt{QVBoxLayout} and \texttt{QGridLayout} are used to organize the control elements. The UI has a fixed geometry of $520 \times 820$ pixels, ensuring consistent presentation across platforms.
+    \item \textbf{Input Processing:} To handle rapid user input, we implemented a deterministic \textbf{Input Queue}. This prevents animation overlaps by queuing movement requests until the current animation cycle is complete.
+\end{itemize}
+
+\section{Game Modes and Features}
+
+\subsection{Operational Modes}
+The application supports three distinct modes as per requirements:
+\begin{itemize}
+    \item \textbf{Normal Mode:} Standard 2048 gameplay with a winning condition at tile 2048.
+    \item \textbf{Unlimited Mode:} An endless variant where the game continues beyond the 2048 tile.
+    \item \textbf{Hard Mode:} A time-pressure variant where a 5-second countdown triggers an automatic random valid move if no user input is received.
+\end{itemize}
+
+\subsection{End Game States}
+Win and loss conditions are handled via a high-level overlay system. When the game ends, inputs are disabled to prevent state corruption, allowing the player only to restart or switch modes.
+
+\section{Technical Challenges and Solutions}
+
+\subsection{Animation Synchronization and Drift}
+Ensuring that animations remain stable on high-latency environments like WebAssembly was a challenge. We implemented a geometry locking mechanism that captures the base coordinates of UI components with a small delay after layout initialization. This prevents the "drifting" of score boxes during rapid updates.
+
+\subsection{Shadow Clipping}
+To achieve high-quality visuals, we used \texttt{QGraphicsDropShadowEffect}. We addressed bottom-corner clipping issues by adjusting the container geometries to accommodate the shadow offsets, ensuring a professional aesthetic.
+
+\section{Conclusion}
+The implementation of the 2048 game successfully meets the technical requirements of the assignment. The use of Qt 6 provided a portable codebase for both desktop and web platforms. The project illustrates the application of object-oriented principles and event-driven programming in a modular software design.
+
+\section*{AI Usage Declaration}
+In compliance with the course AI Usage Policy, we declare that the core project logic and source code were developed by the authors. AI tools were used for grammar refinement in the documentation and for assistance in identifies architectural patterns.
+
+\end{document}
