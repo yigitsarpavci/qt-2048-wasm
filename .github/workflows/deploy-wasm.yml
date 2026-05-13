@@ -16,7 +16,7 @@ jobs:
         uses: actions/cache@v4
         with:
           path: ${{ github.workspace }}/Qt
-          key: ${{ runner.os }}-qt-6.6.1-wasm-v6
+          key: ${{ runner.os }}-qt-6.6.1-wasm-v7
           
       - name: Install Host Qt
         if: steps.cache-qt.outputs.cache-hit != 'true'
@@ -50,10 +50,14 @@ jobs:
         run: |
           mkdir -p build_clean
           cd build_clean
-          QT_WASM=$(find ${{ github.workspace }} -name "wasm_singlethread" | head -n 1)
-          QT_HOST=$(find ${{ github.workspace }} -name "gcc_64" | head -n 1)
+          # Absolute path discovery
+          QT_WASM_PATH=$(find ${{ github.workspace }}/Qt -name "wasm_singlethread" | head -n 1)
+          QT_HOST_PATH=$(find ${{ github.workspace }}/Qt -name "gcc_64" | head -n 1)
+          
+          if [ -z "$QT_WASM_PATH" ]; then echo "Error: WASM Qt not found"; exit 1; fi
+          
           export PATH="/usr/lib/ccache:/usr/local/opt/ccache/libexec:$PATH"
-          $QT_WASM/bin/qt-cmake .. -DQT_HOST_PATH=$QT_HOST -DCMAKE_BUILD_TYPE=Release \
+          $QT_WASM_PATH/bin/qt-cmake .. -DQT_HOST_PATH=$QT_HOST_PATH -DCMAKE_BUILD_TYPE=Release \
             -DCMAKE_CXX_COMPILER_LAUNCHER=ccache \
             -DCMAKE_C_COMPILER_LAUNCHER=ccache
           cmake --build . --parallel $(nproc)
@@ -64,24 +68,38 @@ jobs:
           rm -rf public/*
           cp -r build_clean/* public/
           mv public/2048.html public/index.html || true
+          
+          # Verify files exist
+          if [ ! -f "public/index.html" ]; then echo "Error: index.html missing"; exit 1; fi
+          if [ ! -f "public/2048.wasm" ]; then echo "Error: 2048.wasm missing"; exit 1; fi
+          
           SHA_SHORT=$(echo ${{ github.sha }} | cut -c1-7)
           sed -i "s/\([a-zA-Z0-9]*\)\.js/\1\.js?v=${SHA_SHORT}/g" public/index.html
           sed -i "s/2048\.wasm/2048\.wasm?v=${SHA_SHORT}/g" public/index.html
-          
-      - name: Inject CSS
+
+      - name: Create Injector Script
         run: |
-          python3 -c "
+          cat <<'EOF' > inject_css.py
           import os
-          css = '''
+          css = """
           <style>
             body, html { margin: 0 !important; padding: 0 !important; width: 100vw !important; height: 100vh !important; background-color: #faf8ef !important; display: flex !important; justify-content: center !important; align-items: center !important; overflow: auto !important; }
             #qt-container { width: 480px !important; height: 700px !important; min-width: 480px !important; min-height: 700px !important; max-width: 480px !important; max-height: 700px !important; box-shadow: 0 15px 50px rgba(0,0,0,0.15) !important; background-color: #faf8ef !important; border-radius: 8px !important; overflow: hidden !important; display: flex !important; justify-content: center !important; align-items: center !important; }
             canvas { width: 480px !important; height: 700px !important; max-width: 480px !important; max-height: 700px !important; display: block !important; image-rendering: -webkit-optimize-contrast !important; }
           </style>
-          '''
-          with open('public/index.html', 'r') as f: content = f.read()
-          with open('public/index.html', 'w') as f: f.write(content.replace('</head>', css + '</head>'))
-          "
+          """
+          path = 'public/index.html'
+          if os.path.exists(path):
+              with open(path, 'r') as f: content = f.read()
+              with open(path, 'w') as f: f.write(content.replace('</head>', css + '</head>'))
+              print("CSS Injected successfully.")
+          else:
+              print("Error: index.html not found for injection")
+              exit(1)
+          EOF
+
+      - name: Inject CSS
+        run: python3 inject_css.py
 
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3
@@ -90,5 +108,3 @@ jobs:
           publish_dir: ./public
           user_name: 'github-actions[bot]'
           user_email: 'github-actions[bot]@users.noreply.github.com'
-# v2.0: Optimized
-# perf: triple-caching
