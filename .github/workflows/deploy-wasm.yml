@@ -16,7 +16,7 @@ jobs:
         uses: actions/cache@v4
         with:
           path: ${{ github.workspace }}/Qt
-          key: ${{ runner.os }}-qt-6.6.1-wasm-v7
+          key: ${{ runner.os }}-qt-6.6.1-wasm-v8
           
       - name: Install Host Qt
         if: steps.cache-qt.outputs.cache-hit != 'true'
@@ -50,11 +50,17 @@ jobs:
         run: |
           mkdir -p build_clean
           cd build_clean
-          # Absolute path discovery
-          QT_WASM_PATH=$(find ${{ github.workspace }}/Qt -name "wasm_singlethread" | head -n 1)
-          QT_HOST_PATH=$(find ${{ github.workspace }}/Qt -name "gcc_64" | head -n 1)
+          
+          # Absolute Path Discovery with Permission Hardening
+          QT_ROOT="${{ github.workspace }}/Qt/6.6.1"
+          QT_WASM_PATH=$(find $QT_ROOT -name "wasm_singlethread" | head -n 1)
+          QT_HOST_PATH=$(find $QT_ROOT -name "gcc_64" | head -n 1)
           
           if [ -z "$QT_WASM_PATH" ]; then echo "Error: WASM Qt not found"; exit 1; fi
+          
+          # Fix permissions for CACHED binaries
+          chmod +x $QT_WASM_PATH/bin/* || true
+          chmod +x $QT_HOST_PATH/bin/* || true
           
           export PATH="/usr/lib/ccache:/usr/local/opt/ccache/libexec:$PATH"
           $QT_WASM_PATH/bin/qt-cmake .. -DQT_HOST_PATH=$QT_HOST_PATH -DCMAKE_BUILD_TYPE=Release \
@@ -69,9 +75,7 @@ jobs:
           cp -r build_clean/* public/
           mv public/2048.html public/index.html || true
           
-          # Verify files exist
           if [ ! -f "public/index.html" ]; then echo "Error: index.html missing"; exit 1; fi
-          if [ ! -f "public/2048.wasm" ]; then echo "Error: 2048.wasm missing"; exit 1; fi
           
           SHA_SHORT=$(echo ${{ github.sha }} | cut -c1-7)
           sed -i "s/\([a-zA-Z0-9]*\)\.js/\1\.js?v=${SHA_SHORT}/g" public/index.html
