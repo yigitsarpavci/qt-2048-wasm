@@ -18,7 +18,7 @@ static const QString FONT_STACK = "-apple-system, BlinkMacSystemFont, 'Segoe UI'
 // --- Game Configuration Constants ---
 static const int N = 4;        // Grid Rows
 static const int M = 4;        // Grid Columns
-static const int K = 128;      // Target Win Tile (Testing: 128 instead of 2048)
+static const int K = 2048;     // Target Win Tile
 static const int P = 90;       // Probability (%) for tile '2'
 static const int Q = 10;       // Probability (%) for tile '4'
 
@@ -394,7 +394,7 @@ void MainWindow::updateUI() {
         m_currentAnimationGroup->start();
     }
     m_scoreLabel->setText(QString::number(m_engine.getScore())); m_bestScoreLabel->setText(QString::number(m_engine.getBestScore()));
-    bool won = m_engine.hasWon() && m_mode == GameMode::Normal;
+    bool won = m_engine.hasWon() && m_mode != GameMode::Unlimited;
     bool stuck = !m_engine.canMove();
     m_isGameOver = won || stuck;
     if (m_isGameOver) {
