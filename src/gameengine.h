@@ -1,6 +1,6 @@
 /**
  * @file gameengine.h
- * @brief Professional 2048 Engine with ID Determinism & Doxygen Docs.
+ * @brief Core logic for the 2048 game mechanics, including grid management, movement, and history tracking.
  */
 
 #ifndef GAMEENGINE_H
@@ -14,76 +14,76 @@
 
 /**
  * @enum Direction
- * @brief Valid movement directions in the 2D grid.
+ * @brief Represents the four cardinal directions for tile movement.
  */
 enum class Direction { Up, Down, Left, Right };
 
 /**
  * @struct TileMove
- * @brief Encapsulates a tile transition for UI synchronization.
+ * @brief Encapsulates metadata for a tile transition, used for UI animations.
  */
 struct TileMove {
-    int id;           ///< Unique identifier of the tile
-    int fromRow;      ///< Starting row index
-    int fromCol;      ///< Starting column index
-    int toRow;        ///< Ending row index
-    int toCol;        ///< Ending column index
-    int value;        ///< Value of the tile after the transition
-    bool merged;      ///< True if this move resulted in a merge
+    int id;           ///< Unique persistent identifier of the tile
+    int fromRow;      ///< Source row index
+    int fromCol;      ///< Source column index
+    int toRow;        ///< Destination row index
+    int toCol;        ///< Destination column index
+    int value;        ///< Tile value after transition (e.g., doubled if merged)
+    bool merged;      ///< Indicates if the transition involved a merge
 };
 
 /**
  * @struct Tile
- * @brief Represents a single grid cell.
+ * @brief Represents a single cell in the game grid.
  */
 struct Tile {
-    int value = 0;    ///< Numeric value (0 for empty)
-    int id = -1;      ///< Persistence ID for animation tracking
+    int value = 0;    ///< Numeric value of the tile (0 indicates an empty cell)
+    int id = -1;      ///< Persistent ID used for tracking and animating the tile across moves
 };
 
 /**
  * @struct GameSnapshot
- * @brief Capture of the game state for atomic Undo/Redo.
+ * @brief Stores the full state of the game for undo operations.
  */
 struct GameSnapshot {
-    std::vector<std::vector<Tile>> grid; ///< Grid state
-    int score;                           ///< Current score
-    int bestScore;                       ///< Best score at that moment
-    int nextId;                          ///< ID counter state for determinism
+    std::vector<std::vector<Tile>> grid; ///< Current state of the grid
+    int score;                           ///< Current player score
+    int bestScore;                       ///< Best score achieved up to this state
+    int nextId;                          ///< Next available ID for tile generation
 };
 
 /**
  * @class GameEngine
- * @brief High-performance, deterministic engine for 2048 logic.
+ * @brief Handles the deterministic game logic, move processing, and state management for 2048.
  */
 class GameEngine {
 public:
     /**
-     * @brief Constructs the engine with specific grid dimensions.
-     * @param n Rows count
-     * @param m Columns count
-     * @param k Target value for victory
+     * @brief Constructs the game engine with specified dimensions and goal.
+     * @param n Number of rows
+     * @param m Number of columns
+     * @param k Target value for a winning tile (e.g., 2048)
      */
     GameEngine(int n, int m, int k);
 
     /**
-     * @brief Processes a grid transformation in the given direction.
-     * @param dir The requested direction.
-     * @return true if the board state changed.
+     * @brief Processes a move attempt in the specified direction.
+     * @param dir The direction to slide the tiles.
+     * @return true if any tiles moved or merged, triggering a state update and spawn.
      */
     bool move(Direction dir);
 
     /**
-     * @brief Resets the internal state to the initial setup.
+     * @brief Resets the engine to a clean starting state with two initial tiles.
      */
     void reset();
 
     /**
-     * @brief Reverts the board to the last stored snapshot.
+     * @brief Reverts the game state to the most recent snapshot in the history stack.
      */
     void undo();
 
-    // --- Accessors ---
+    // --- State Accessors ---
     const std::vector<std::vector<Tile>>& getGrid() const { return m_grid; }
     int getScore() const { return m_score; }
     int getBestScore() const { return m_bestScore; }
@@ -92,21 +92,25 @@ public:
     int getHistoryDepth() const { return (int)m_history.size(); }
     int getTxCount() const { return m_txCounter; }
     
-    /** @return true if a tile >= K exists in the grid. */
+    /**
+     * @brief Checks if the player has achieved the winning tile value.
+     */
     bool hasWon() const;
     
-    /** @return true if empty cells exist or valid merges are possible. */
+    /**
+     * @brief Determines if any valid moves remain (empty cells or possible merges).
+     */
     bool canMove() const;
 
-    // --- Developer & Configuration API ---
+    // --- Configuration and Debugging ---
     void setTile(int r, int c, int val) { if (r>=0 && r<m_rows && c>=0 && c<m_cols) { m_grid[r][c].value = val; m_grid[r][c].id = -1; } }
     void setScore(int s) { m_score = s; }
     void setSpawnEnabled(bool e) { m_spawnEnabled = e; }
     void setBestScore(int s) { m_bestScore = s; }
     
     /**
-     * @brief Updates the tile generation probability.
-     * @param p Chance of spawning a '2' (0.0 to 1.0).
+     * @brief Configures the probability of spawning a '2' vs a '4'.
+     * @param p Probability (0.0 to 1.0) of generating a '2'.
      */
     void setGenerationChances(double p);
 
@@ -132,4 +136,3 @@ private:
 };
 
 #endif // GAMEENGINE_H
-// v1.2: Modes

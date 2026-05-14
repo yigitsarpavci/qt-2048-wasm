@@ -1,6 +1,6 @@
 /**
  * @file gameengine.cpp
- * @brief Implementation of the game engine logic.
+ * @brief Implementation of the 2048 game engine logic.
  */
 
 #include "gameengine.h"
@@ -16,7 +16,7 @@ GameEngine::GameEngine(int n, int m, int k)
 }
 
 /**
- * @brief Resets the engine state. IDs and History are cleared.
+ * @brief Resets the game state, clearing the grid, score, and history.
  */
 void GameEngine::reset() {
     m_grid = std::vector<std::vector<Tile>>(m_rows, std::vector<Tile>(m_cols, {0, -1}));
@@ -27,7 +27,7 @@ void GameEngine::reset() {
     m_txCounter = 0;
     m_spawnId = -1;
 
-    // Initial tiles must be exactly two '2's according to specification
+    // Start with two initial tiles as per standard rules
     std::vector<std::pair<int, int>> empty;
     for (int r = 0; r < m_rows; ++r)
         for (int c = 0; c < m_cols; ++c)
@@ -45,19 +45,18 @@ void GameEngine::setGenerationChances(double p) {
 }
 
 /**
- * @brief High-level movement logic. Coordinates rotations and merging.
+ * @brief Main move logic. Handles coordinate rotation, merging, and state updates.
  */
 bool GameEngine::move(Direction dir) {
     auto oldGrid = m_grid;
-    saveSnapshot(); // Save current state for potential undo
-    m_lastMoves.clear(); // Clear previous move metadata
+    saveSnapshot(); // Preserve state for undo
+    m_lastMoves.clear();
     m_spawnId = -1;
 
     int scoreDelta = 0;
     int merges = 0;
 
-    // Helper to rotate/transform grid coordinates based on the requested direction.
-    // This allows the merge logic to always process rows horizontally.
+    // Rotates coordinates to allow a single left-to-right merge logic to handle all four directions.
     auto rotate = [&](int& r, int& c, bool back = false) {
         Q_UNUSED(back);
         if (dir == Direction::Up) return;
@@ -68,42 +67,39 @@ bool GameEngine::move(Direction dir) {
 
     std::vector<std::vector<Tile>> newGrid(m_rows, std::vector<Tile>(m_cols));
     
-    // Process each column independently after transformation
+    // Process each line independently based on the current direction's rotation.
     for (int c = 0; c < m_cols; ++c) {
         std::vector<Tile> line;
-        // Step 1: Collect non-zero tiles in the current line
         for (int r = 0; r < m_rows; ++r) {
             int tr = r, tc = c; rotate(tr, tc);
             if (m_grid[tr][tc].value != 0) line.push_back(m_grid[tr][tc]);
         }
 
         std::vector<Tile> merged;
-        // Step 2: Iterate through tiles and merge adjacent identical values
         for (size_t i = 0; i < line.size(); ++i) {
             if (i + 1 < line.size() && line[i].value == line[i+1].value) {
-                // Merge detected: calculate new value and update score
+                // Combine identical adjacent tiles
                 int newVal = line[i].value * 2;
                 scoreDelta += newVal;
                 merges++;
                 merged.push_back({newVal, line[i].id});
                 
-                // Track move metadata for UI animation synchronization
+                // Track metadata for smooth UI animations
                 int tr1 = (int)merged.size() - 1, tc1 = c; rotate(tr1, tc1);
                 int fr1 = (int)i, fc1 = c; rotate(fr1, fc1);
                 int fr2 = (int)i + 1, fc2 = c; rotate(fr2, fc2);
                 
                 m_lastMoves.push_back({line[i].id, fr1, fc1, tr1, tc1, newVal, true});
                 m_lastMoves.push_back({line[i+1].id, fr2, fc2, tr1, tc1, newVal, true});
-                i++; // Skip the next tile as it has been merged
+                i++;
             } else {
-                // No merge: shift tile to its new position
+                // Shift tile without merging
                 merged.push_back(line[i]);
                 int tr = (int)merged.size() - 1, tc = c; rotate(tr, tc);
                 int fr = (int)i, fc = c; rotate(fr, fc);
                 m_lastMoves.push_back({line[i].id, fr, fc, tr, tc, line[i].value, false});
             }
         }
-        // Step 3: Pad the rest of the line with empty tiles
         while (merged.size() < (size_t)m_rows) merged.push_back({0, -1});
         for (int r = 0; r < m_rows; ++r) {
             int tr = r, tc = c; rotate(tr, tc);
@@ -111,7 +107,6 @@ bool GameEngine::move(Direction dir) {
         }
     }
 
-    // Determine if any movement or merging actually occurred
     bool changed = false;
     for (int r = 0; r < m_rows; ++r) {
         for (int c = 0; c < m_cols; ++c) {
@@ -123,19 +118,17 @@ bool GameEngine::move(Direction dir) {
         m_grid = newGrid;
         m_score += scoreDelta;
         if (m_score > m_bestScore) m_bestScore = m_score;
-        spawnTiles(1); // Add a new random tile after a successful move
+        spawnTiles(1);
         logTransaction(scoreDelta, merges);
         return true;
     } else {
-        // If no change, discard the snapshot saved at the beginning
         if (!m_history.empty()) m_history.pop_back(); 
         return false;
     }
 }
 
 /**
- * @brief Spawns new tiles into random empty cells.
- * @param count Number of tiles to inject.
+ * @brief Spawns new tiles in random available empty cells.
  */
 void GameEngine::spawnTiles(int count) {
     if (!m_spawnEnabled) return;
@@ -157,7 +150,7 @@ void GameEngine::spawnTiles(int count) {
 }
 
 /**
- * @brief Restores state including ID counter for full determinism.
+ * @brief Restores the game state from the history stack.
  */
 void GameEngine::undo() {
     if (m_history.empty()) return;
@@ -165,18 +158,17 @@ void GameEngine::undo() {
     m_grid = snap.grid;
     m_score = snap.score;
     m_bestScore = snap.bestScore;
-    m_nextId = snap.nextId; // Full ID Determinism
+    m_nextId = snap.nextId;
     m_history.pop_back();
     m_lastMoves.clear();
     m_spawnId = -1;
 }
 
 /**
- * @brief Captures current state into history stack.
+ * @brief Saves the current game state into the history stack for undo support.
  */
 void GameEngine::saveSnapshot() {
-    // Specification: 'There is no limit on the number of undo steps'
-    // Storing up to 100,000 steps to satisfy this in practical terms.
+    // Maintain a large history stack for continuous undo operations
     if (m_history.size() > 100000) m_history.pop_front();
     m_history.push_back({m_grid, m_score, m_bestScore, m_nextId});
 }
@@ -200,7 +192,7 @@ bool GameEngine::canMove() const {
 }
 
 /**
- * @brief Logs game transactions for debugging purposes.
+ * @brief Logs move transaction details for monitoring and debugging.
  */
 void GameEngine::logTransaction(int delta, int merges) {
     m_txCounter++;
@@ -208,5 +200,3 @@ void GameEngine::logTransaction(int delta, int merges) {
     qDebug().noquote() << QString("[%1] TX#%2 | Score: %3 (+%4) | Merges: %5 | NextID: %6")
         .arg(ts).arg(m_txCounter).arg(m_score).arg(delta).arg(merges).arg(m_nextId);
 }
-// v1.1: Undo persistence
-// v1.1: Undo support

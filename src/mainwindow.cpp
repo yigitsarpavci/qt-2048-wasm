@@ -1,6 +1,6 @@
 /**
  * @file mainwindow.cpp
- * @brief Implementation of the main application window and game UI.
+ * @brief Implementation of the 2048 main window, UI components, and event handling.
  */
 
 #include "mainwindow.h"
@@ -15,14 +15,16 @@
 
 static const QString FONT_STACK = "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif";
 
-// --- Section 2.3: Configuration Constants ---
+// --- Game Configuration Constants ---
 static const int N = 4;        // Grid Rows
 static const int M = 4;        // Grid Columns
 static const int K = 2048;     // Target Win Tile
 static const int P = 90;       // Probability (%) for tile '2'
 static const int Q = 10;       // Probability (%) for tile '4'
-// --------------------------------------------
 
+/**
+ * @brief Utility to generate consistent button styles for mode selection.
+ */
 static QString getModeButtonStyle(bool active) {
     QString color = active ? "#8f7a66" : "#bbada0";
     return QString("QPushButton { background-color: %1; color: white; font-weight: bold; border-radius: 6px; font-size: 16px; border: none; } "
@@ -30,7 +32,7 @@ static QString getModeButtonStyle(bool active) {
 }
 
 TileWidget::TileWidget(QWidget *parent) : QWidget(parent), m_value(0) {
-    setFixedSize(90, 100); // Extreme compact sizing
+    setFixedSize(90, 100); // Tile visual dimensions
     setAttribute(Qt::WA_TransparentForMouseEvents);
     m_face = new QWidget(this);
     m_face->setGeometry(0, 0, 90, 90);
@@ -51,6 +53,9 @@ void TileWidget::setValue(int val) {
     if (!isVisible()) show();
 }
 
+/**
+ * @brief Animates the tile's appearance with a scale-up effect.
+ */
 void TileWidget::animatePopIn() {
     show(); m_face->show();
     auto *a = new QPropertyAnimation(m_face, "geometry");
@@ -98,18 +103,20 @@ MainWindow::MainWindow(QWidget *parent)
     QTimer::singleShot(0, this, [this]() { updateUI(); });
 }
 
+/**
+ * @brief Constructs the UI tree and initializes style sheets for the mobile-like experience.
+ */
 void MainWindow::setupUI() {
     setWindowTitle("2048");
     setMinimumSize(420, 700); 
     setStyleSheet("background-color: #faf8ef;");
 
-    // Simplify layout: Single centered column
     auto *mainLayout = new QVBoxLayout(this);
     mainLayout->setContentsMargins(15, 20, 15, 20);
     mainLayout->setSpacing(15);
     mainLayout->setAlignment(Qt::AlignTop | Qt::AlignHCenter);
 
-    // --- Header ---
+    // --- Header Section ---
     auto *headerWidget = new QWidget(this);
     headerWidget->setFixedWidth(420);
     auto *headerRow = new QHBoxLayout(headerWidget);
@@ -162,7 +169,7 @@ void MainWindow::setupUI() {
     headerRow->addLayout(scoreRow);
     mainLayout->addWidget(headerWidget, 0, Qt::AlignCenter);
 
-    // --- Buttons Section ---
+    // --- Action Buttons (New Game / Undo) ---
     auto *actionWidget = new QWidget(this);
     actionWidget->setFixedWidth(420);
     auto *actionRow = new QHBoxLayout(actionWidget);
@@ -186,6 +193,7 @@ void MainWindow::setupUI() {
     actionRow->addWidget(m_undoBtn, 1);
     mainLayout->addWidget(actionWidget, 0, Qt::AlignCenter);
 
+    // --- Game Mode Selection ---
     auto *modeWidget = new QWidget(this);
     modeWidget->setFixedWidth(420);
     auto *modeRow = new QHBoxLayout(modeWidget);
@@ -206,14 +214,14 @@ void MainWindow::setupUI() {
     modeRow->addWidget(m_hardBtn);
     mainLayout->addWidget(modeWidget, 0, Qt::AlignCenter);
 
-
-    // --- Grid Area ---
+    // --- Game Grid Area ---
     m_gridWrapper = new QFrame(this);
     m_gridWrapper->setFixedSize(420, 420);
     m_gridContainer = new QFrame(m_gridWrapper);
     m_gridContainer->setFixedSize(420, 420);
     m_gridContainer->setStyleSheet("background-color: #bbada0; border-radius: 6px;");
     
+    // Background cells
     for (int i=0; i<16; ++i) {
         auto *bg = new QLabel(m_gridContainer);
         bg->setFixedSize(90, 90);
@@ -225,6 +233,7 @@ void MainWindow::setupUI() {
     m_tileLayer->setGeometry(0, 0, 420, 420);
     m_tileLayer->setStyleSheet("background: transparent;");
     
+    // Game Over / Win Overlay
     m_overlay = new QFrame(m_gridContainer);
     m_overlay->setGeometry(0, 0, 420, 420);
     m_overlay->setStyleSheet("background-color: rgba(238, 228, 218, 0.85); border-radius: 6px;");
@@ -263,7 +272,7 @@ void MainWindow::setupUI() {
     mainLayout->addWidget(m_debugPanel);
     m_debugPanel->setVisible(m_isDebugMode);
 
-    // Event connections
+    // Event signals
     auto atomicReset = [this]() { 
         m_engine.reset(); m_isGameOver = false; m_overlay->hide(); m_lastScore = 0; m_lastBestScore = m_engine.getBestScore(); 
         m_inputQueue.clear(); m_statusLabel->setText(""); updateUI(); resetHardModeTimer(); 
@@ -274,7 +283,6 @@ void MainWindow::setupUI() {
         if (!m_isAnimating && !m_isGameOver && m_engine.getHistoryDepth() > 0) { 
             m_engine.undo(); 
             m_lastScore = m_engine.getScore(); 
-            // Anti-cheat: Don't reset Hard Mode timer on undo
             m_preventTimerReset = true;
             updateUI(); 
             m_preventTimerReset = false;
@@ -285,18 +293,19 @@ void MainWindow::setupUI() {
     connect(m_unlimitedBtn, &QPushButton::clicked, this, [this]() { if (m_engine.getScore()==0 || m_isGameOver) { m_mode = GameMode::Unlimited; updateUI(); resetHardModeTimer(); } });
     connect(m_hardBtn, &QPushButton::clicked, this, [this]() { if (m_engine.getScore()==0 || m_isGameOver) { m_mode = GameMode::Hard; updateUI(); resetHardModeTimer(); } });
 
+    // Cache base geometry for stable score-increase animations
     QTimer::singleShot(200, this, [this]() {
         m_scoreBaseRect = m_scoreBox->geometry();
         m_bestBaseRect = m_bestBox->geometry();
     });
 }
 
-
-
+/**
+ * @brief Triggers a visual feedback animation for score increases.
+ */
 void MainWindow::updateBoxFeedback(QFrame* box, QLabel* title, const QString& baseText, int delta) {
     if (!box || !title || delta <= 0) return;
     
-    // Use stored base geometry to prevent cumulative 'flying away' effect
     QRect baseR = (box == m_scoreBox) ? m_scoreBaseRect : m_bestBaseRect;
     if (baseR.isNull()) baseR = box->geometry(); 
 
@@ -316,16 +325,17 @@ void MainWindow::updateBoxFeedback(QFrame* box, QLabel* title, const QString& ba
     pa->start(QAbstractAnimation::DeleteWhenStopped);
 }
 
+/**
+ * @brief Synchronizes the visual state with the underlying game engine.
+ * Handles animations, tile spawning, and game-over detection.
+ */
 void MainWindow::updateUI() {
     const auto& grid = m_engine.getGrid(); const auto& moves = m_engine.getLastMoves();
     int spawnId = m_engine.getSpawnId(); int myMoveId = ++m_currentMoveId;
     
-    // Check for score increases and trigger visual feedback
     if (m_engine.getScore() > m_lastScore && !moves.empty()) {
         int delta = m_engine.getScore() - m_lastScore;
         updateBoxFeedback(m_scoreBox, m_scoreTitle, "SCORE", delta);
-        
-        // Show record break feedback only if best score improved
         if (m_engine.getBestScore() > m_lastBestScore) {
             updateBoxFeedback(m_bestBox, m_bestTitle, "BEST", m_engine.getBestScore() - m_lastBestScore);
         }
@@ -333,11 +343,9 @@ void MainWindow::updateUI() {
     m_lastBestScore = m_engine.getBestScore();
     m_lastScore = m_engine.getScore();
 
-    // Reset current animations if a new update is requested
     if (m_currentAnimationGroup) { m_currentAnimationGroup->stop(); m_currentAnimationGroup->deleteLater(); m_currentAnimationGroup = nullptr; }
 
     if (moves.empty()) {
-        // Static update: Refresh all tile widgets without animation (e.g. on Undo or Start)
         m_isAnimating = false;
         for (auto const& [id, w] : m_tileWidgets) { w->hide(); w->deleteLater(); } m_tileWidgets.clear();
         for (int r=0; r<4; ++r) for (int c=0; c<4; ++c) if (grid[r][c].value != 0) {
@@ -346,7 +354,6 @@ void MainWindow::updateUI() {
         }
         resetHardModeTimer();
     } else {
-        // Animated update: Execute parallel move animations for all tiles
         m_isAnimating = true; m_currentAnimationGroup = new QParallelAnimationGroup(this);
         for (const auto& m : moves) if (m_tileWidgets.count(m.id)) {
             auto *a = new QPropertyAnimation(m_tileWidgets[m.id], "pos");
@@ -354,31 +361,24 @@ void MainWindow::updateUI() {
             m_currentAnimationGroup->addAnimation(a);
         }
         
-        // Finalize state after all animations finish
         connect(m_currentAnimationGroup, &QParallelAnimationGroup::finished, this, [this, myMoveId, grid, spawnId]() {
-            if (myMoveId != m_currentMoveId) return; // Prevent race conditions from stale animations
+            if (myMoveId != m_currentMoveId) return;
             
             std::map<int, TileWidget*> next;
             for (int r=0; r<4; ++r) for (int c=0; c<4; ++c) if (grid[r][c].value != 0) {
                 int id = grid[r][c].id;
                 if (m_tileWidgets.count(id)) { next[id] = m_tileWidgets[id]; m_tileWidgets.erase(id); }
                 else if (id == spawnId) {
-                    // Inject the newly spawned tile with a pop-in effect
                     auto *w = new TileWidget(m_tileLayer); w->setValue(grid[r][c].value); w->move(18+c*98, 18+r*98); w->animatePopIn();
                     next[id] = w;
                 }
             }
-            // Cleanup orphaned widgets (e.g. merged tiles)
             for (auto const& [id, w] : m_tileWidgets) { w->hide(); w->deleteLater(); } m_tileWidgets = next;
-            
-            // Final position sync and score update
             for (int r=0; r<4; ++r) for (int c=0; c<4; ++c) if (grid[r][c].value != 0) {
                 int id = grid[r][c].id; m_tileWidgets[id]->setValue(grid[r][c].value); m_tileWidgets[id]->move(18+c*98, 18+r*98);
             }
             m_isAnimating = false; m_currentAnimationGroup = nullptr; resetHardModeTimer();
             m_undoBtn->setEnabled(m_engine.getHistoryDepth() > 0);
-            
-            // Process the next input in the queue if the user is playing fast
             if (!m_inputQueue.empty()) { 
                 Direction n = m_inputQueue.front(); m_inputQueue.erase(m_inputQueue.begin()); processMove(n);
             }
@@ -416,6 +416,9 @@ void MainWindow::processMove(Direction dir) {
     }
 }
 
+/**
+ * @brief Handles keyboard input for movement, undo, and mode selection.
+ */
 void MainWindow::keyPressEvent(QKeyEvent *event) {
     if (event->isAutoRepeat()) return;
     int k = event->key();
@@ -444,6 +447,9 @@ bool MainWindow::event(QEvent *event) {
     return QWidget::event(event);
 }
 
+/**
+ * @brief Manages the 5-second countdown for Hard Mode.
+ */
 void MainWindow::resetHardModeTimer() {
     if (m_preventTimerReset) return;
     m_hardModeTimer->stop(); m_displayTimer->stop();
@@ -451,13 +457,14 @@ void MainWindow::resetHardModeTimer() {
     if (m_mode == GameMode::Hard && !m_isGameOver) { m_hardModeTimer->start(5000); m_timeLeftMs = 5000; m_displayTimer->start(100); }
 }
 
+/**
+ * @brief Executes a random valid move in Hard Mode when the timer expires.
+ */
 void MainWindow::makeRandomMove() {
     if (m_isGameOver || m_isAnimating) return;
     std::vector<Direction> ds = {Direction::Up, Direction::Down, Direction::Left, Direction::Right};
-    // Ensure the automatic slide is truly random as per Section 2.4
+    // Random shuffle ensures no directional bias in automatic moves
     static std::mt19937 g(static_cast<unsigned int>(std::time(nullptr)));
     std::shuffle(ds.begin(), ds.end(), g);
     for (auto d : ds) if (m_engine.move(d)) { updateUI(); break; }
 }
-// v1.2: Game modes
-// v1.3: Persistence
