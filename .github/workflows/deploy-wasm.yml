@@ -115,8 +115,8 @@ jobs:
               wrapped_inner = f'<div id="game-container">{body_inner}</div>'
               content = content.replace(body_match.group(0), f'{body_open}{wrapped_inner}{body_close}')
 
-          # 3. Ensure qt-container has its required style to be visible
-          content = content.replace('id="qt-container"', 'id="qt-container" style="width:100%; height:100%;"')
+          # 3. Ensure screen container is styled correctly to be visible
+          content = content.replace('id="screen"', 'id="screen" style="width:100%; height:100%;"')
 
           with open(path, 'w') as f:
               f.write(content)
