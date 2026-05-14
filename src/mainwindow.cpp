@@ -18,7 +18,7 @@ static const QString FONT_STACK = "-apple-system, BlinkMacSystemFont, 'Segoe UI'
 // --- Game Configuration Constants ---
 static const int N = 4;        // Grid Rows
 static const int M = 4;        // Grid Columns
-static const int K = 2048;     // Target Win Tile
+static const int K = 128;      // Target Win Tile (Testing: 128 instead of 2048)
 static const int P = 90;       // Probability (%) for tile '2'
 static const int Q = 10;       // Probability (%) for tile '4'
 
@@ -290,9 +290,16 @@ void MainWindow::setupUI() {
         } 
     });
     
-    connect(m_normalBtn, &QPushButton::clicked, this, [this]() { if (m_engine.getScore()==0 || m_isGameOver) { m_mode = GameMode::Normal; updateUI(); resetHardModeTimer(); } });
-    connect(m_unlimitedBtn, &QPushButton::clicked, this, [this]() { if (m_engine.getScore()==0 || m_isGameOver) { m_mode = GameMode::Unlimited; updateUI(); resetHardModeTimer(); } });
-    connect(m_hardBtn, &QPushButton::clicked, this, [this]() { if (m_engine.getScore()==0 || m_isGameOver) { m_mode = GameMode::Hard; updateUI(); resetHardModeTimer(); } });
+    auto changeMode = [this, atomicReset](GameMode newMode) {
+        if (m_engine.getScore() == 0 || m_isGameOver) {
+            m_mode = newMode;
+            if (m_isGameOver) atomicReset();
+            else { updateUI(); resetHardModeTimer(); }
+        }
+    };
+    connect(m_normalBtn, &QPushButton::clicked, this, [this, changeMode]() { changeMode(GameMode::Normal); });
+    connect(m_unlimitedBtn, &QPushButton::clicked, this, [this, changeMode]() { changeMode(GameMode::Unlimited); });
+    connect(m_hardBtn, &QPushButton::clicked, this, [this, changeMode]() { changeMode(GameMode::Hard); });
 
     // Cache base geometry for stable score-increase animations
     QTimer::singleShot(200, this, [this]() {
