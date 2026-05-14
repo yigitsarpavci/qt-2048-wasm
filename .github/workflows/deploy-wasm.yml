@@ -98,33 +98,25 @@ jobs:
           head_split = content.split('</head>')
           if len(head_split) > 1:
               head = head_split[0]
-              # Remove any existing style tags to prevent conflicts
               head = re.sub(r'<style>.*?</style>', '', head, flags=re.DOTALL)
               new_head = head + '<link rel="stylesheet" href="style.css">\n</head>'
               content = new_head + head_split[1]
 
-          # 2. Clean and Wrap Body
-          # We want to keep ONLY the scripts and our new container.
-          # First, find all scripts
-          scripts = re.findall(r'<script.*?</script>', content, re.DOTALL)
-          
-          # Find the main interactive part (canvas or existing container)
-          # If qt-container exists, we use it. Otherwise, we look for canvas.
-          inner_content = ""
-          if '<div id="qt-container">' in content:
-              # Extract everything inside qt-container if possible, or just the div itself
-              inner_content = '<div id="qt-container"></div>' # Qt will likely re-inject anyway
-          else:
-              inner_content = '<div id="qt-container"><canvas id="qt-canvas"></canvas></div>'
+          # 2. Robust Wrapper Injection
+          # We wrap everything inside <body>...</body> into our #game-container
+          # but we must keep scripts at the end if they were there.
+          body_match = re.search(r'(<body[^>]*>)(.*?)(</body>)', content, re.DOTALL)
+          if body_match:
+              body_open = body_match.group(1)
+              body_inner = body_match.group(2)
+              body_close = body_match.group(3)
+              
+              # We wrap the inner content. We don't want to break relative script paths.
+              wrapped_inner = f'<div id="game-container">{body_inner}</div>'
+              content = content.replace(body_match.group(0), f'{body_open}{wrapped_inner}{body_close}')
 
-          # Construct new body
-          new_body = f'<body>\n<div id="game-container">\n{inner_content}\n</div>\n'
-          for script in scripts:
-              new_body += script + '\n'
-          new_body += '</body>'
-
-          # Replace old body with new body
-          content = re.sub(r'<body.*?>.*?</body>', new_body, content, flags=re.DOTALL)
+          # 3. Ensure qt-container has its required style to be visible
+          content = content.replace('id="qt-container"', 'id="qt-container" style="width:100%; height:100%;"')
 
           with open(path, 'w') as f:
               f.write(content)
