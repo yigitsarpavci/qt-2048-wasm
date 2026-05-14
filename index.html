@@ -15,14 +15,9 @@
       html, body { padding: 0; margin: 0; overflow: hidden; height: 100% }
       #screen { width: 100%; height: 100%; }
     </style>
-  
-<style>
-  body, html { margin: 0 !important; padding: 0 !important; width: 100vw !important; height: 100vh !important; background-color: #faf8ef !important; display: flex !important; justify-content: center !important; align-items: center !important; overflow: auto !important; }
-  #qt-container { width: 480px !important; height: 700px !important; min-width: 480px !important; min-height: 700px !important; max-width: 480px !important; max-height: 700px !important; box-shadow: 0 15px 50px rgba(0,0,0,0.15) !important; background-color: #faf8ef !important; border-radius: 8px !important; overflow: hidden !important; display: flex !important; justify-content: center !important; align-items: center !important; }
-  canvas { width: 480px !important; height: 700px !important; max-width: 480px !important; max-height: 700px !important; display: block !important; image-rendering: -webkit-optimize-contrast !important; }
-</style>
+  <link rel="stylesheet" href="style.css">
 </head>
-  <body onload="init()">
+  <body onload="init()"><div id="game-container"><div id="qt-container">
     <figure style="overflow:visible;" id="qtspinner">
       <center style="margin-top:1.5em; line-height:150%">
         <img src="qtlogo.svg" width="320" height="200" style="display:block"></img>
@@ -33,7 +28,7 @@
     </figure>
     <div id="screen"></div>
 
-    <script type="text/javascript">
+    </div></div><script type="text/javascript">
         async function init()
         {
             const spinner = document.querySelector('#qtspinner');
@@ -74,7 +69,7 @@
             }
         }
     </script>
-    <script src="2048.js?v=050e103"></script>
-    <script type="text/javascript" src="qtloader.js?v=050e103"></script>
+    <script src="2048.js?v=58ca042"></script>
+    <script type="text/javascript" src="qtloader.js?v=58ca042"></script>
   </body>
 </html>
