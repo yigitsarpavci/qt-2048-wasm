@@ -73,6 +73,7 @@ jobs:
           mkdir -p public
           rm -rf public/*
           cp -r build_clean/* public/
+          cp src/style.css public/
           mv public/2048.html public/index.html || true
           
           if [ ! -f "public/index.html" ]; then echo "Error: index.html missing"; exit 1; fi
@@ -81,29 +82,46 @@ jobs:
           sed -i "s/\([a-zA-Z0-9]*\)\.js/\1\.js?v=${SHA_SHORT}/g" public/index.html
           sed -i "s/2048\.wasm/2048\.wasm?v=${SHA_SHORT}/g" public/index.html
 
-      - name: Create Injector Script
+      - name: Refactor HTML for Mobile Layout
         run: |
-          cat <<'EOF' > inject_css.py
-          import os
-          css = """
-          <style>
-            body, html { margin: 0 !important; padding: 0 !important; width: 100vw !important; height: 100vh !important; background-color: #faf8ef !important; display: flex !important; justify-content: center !important; align-items: center !important; overflow: auto !important; }
-            #qt-container { width: 480px !important; height: 700px !important; min-width: 480px !important; min-height: 700px !important; max-width: 480px !important; max-height: 700px !important; box-shadow: 0 15px 50px rgba(0,0,0,0.15) !important; background-color: #faf8ef !important; border-radius: 8px !important; overflow: hidden !important; display: flex !important; justify-content: center !important; align-items: center !important; }
-            canvas { width: 480px !important; height: 700px !important; max-width: 480px !important; max-height: 700px !important; display: block !important; image-rendering: -webkit-optimize-contrast !important; }
-          </style>
-          """
+          python3 - <<'EOF'
+          import os, re
           path = 'public/index.html'
-          if os.path.exists(path):
-              with open(path, 'r') as f: content = f.read()
-              with open(path, 'w') as f: f.write(content.replace('</head>', css + '</head>'))
-              print("CSS Injected successfully.")
-          else:
-              print("Error: index.html not found for injection")
+          if not os.path.exists(path):
+              print("index.html not found")
               exit(1)
+              
+          with open(path, 'r') as f:
+              content = f.read()
+
+          # 1. Inject Stylesheet
+          head_split = content.split('</head>')
+          if len(head_split) > 1:
+              new_head = head_split[0] + '<link rel="stylesheet" href="style.css">\n</head>'
+              content = new_head + head_split[1]
+
+          # 2. Wrap Canvas/Container
+          # Qt usually puts things in a div or body. We wrap the main interactive part.
+          # We look for the canvas or the default container.
+          if '<div id="qt-container">' in content:
+              # Already has a container, wrap it
+              content = content.replace('<div id="qt-container">', '<div id="game-container"><div id="qt-container">')
+              # Find the end of that div and close our wrapper
+              # This is simplified; assumes the qt-container is the main thing in body
+              content = content.replace('</body>', '</div></div></body>')
+          else:
+              # No qt-container? Let's wrap the whole body content before scripts
+              body_match = re.search(r'<body[^>]*>(.*?)<script', content, re.DOTALL)
+              if body_match:
+                  inner_body = body_match.group(1)
+                  wrapped = f'<div id="game-container"><div id="qt-container">{inner_body}</div></div>'
+                  content = content.replace(inner_body, wrapped)
+
+          with open(path, 'w') as f:
+              f.write(content)
+          print("HTML Refactored for Mobile Layout successfully.")
           EOF
 
-      - name: Inject CSS
-        run: python3 inject_css.py
 
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3
