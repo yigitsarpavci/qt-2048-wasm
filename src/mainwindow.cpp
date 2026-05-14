@@ -27,7 +27,8 @@ static const int Q = 10;       // Probability (%) for tile '4'
  */
 static QString getModeButtonStyle(bool active) {
     QString color = active ? "#8f7a66" : "#bbada0";
-    return QString("QPushButton { background-color: %1; color: white; font-weight: bold; border-radius: 6px; font-size: 16px; border: none; } "
+    return QString("QPushButton { background-color: %1; color: white; font-weight: bold; border-radius: 6px; "
+                   "font-size: 14px; border: none; white-space: nowrap; } "
                    "QPushButton:hover { background-color: #9f8a76; }").arg(color);
 }
 
@@ -94,7 +95,7 @@ MainWindow::MainWindow(QWidget *parent)
     m_displayTimer = new QTimer(this);
     connect(m_displayTimer, &QTimer::timeout, this, [this]() {
         m_timeLeftMs -= 100; if (m_timeLeftMs < 0) m_timeLeftMs = 0;
-        if (m_mode == GameMode::Hard && !m_isGameOver) m_hardBtn->setText(QString("Hard (3) [%1s]").arg(QString::number(m_timeLeftMs/1000.0,'f',1)));
+        updateHardButtonLabel();
     });
     
     setupUI();
@@ -399,6 +400,7 @@ void MainWindow::updateUI() {
     m_normalBtn->setStyleSheet(getModeButtonStyle(m_mode == GameMode::Normal));
     m_unlimitedBtn->setStyleSheet(getModeButtonStyle(m_mode == GameMode::Unlimited));
     m_hardBtn->setStyleSheet(getModeButtonStyle(m_mode == GameMode::Hard));
+    updateHardButtonLabel();
     
     m_undoBtn->setEnabled(!m_isAnimating && !m_isGameOver && m_engine.getHistoryDepth() > 0);
     QSettings s("Group1", "2048"); s.setValue("bestScore", m_engine.getBestScore());
@@ -450,11 +452,25 @@ bool MainWindow::event(QEvent *event) {
 /**
  * @brief Manages the 5-second countdown for Hard Mode.
  */
+void MainWindow::updateHardButtonLabel() {
+    if (m_mode == GameMode::Hard && !m_isGameOver) {
+        m_hardBtn->setText(QString("Hard (3) (%1s)").arg(QString::number(m_timeLeftMs/1000.0,'f',1)));
+    } else {
+        m_hardBtn->setText("Hard (3)");
+    }
+}
+
 void MainWindow::resetHardModeTimer() {
     if (m_preventTimerReset) return;
     m_hardModeTimer->stop(); m_displayTimer->stop();
-    m_hardBtn->setText("Hard (3)");
-    if (m_mode == GameMode::Hard && !m_isGameOver) { m_hardModeTimer->start(5000); m_timeLeftMs = 5000; m_displayTimer->start(100); }
+    if (m_mode == GameMode::Hard && !m_isGameOver) { 
+        m_timeLeftMs = 5000; 
+        updateHardButtonLabel();
+        m_hardModeTimer->start(5000); 
+        m_displayTimer->start(100); 
+    } else {
+        updateHardButtonLabel();
+    }
 }
 
 /**

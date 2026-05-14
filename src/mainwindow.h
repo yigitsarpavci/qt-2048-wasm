@@ -73,6 +73,7 @@ private:
     void setupUI();
     void updateUI();
     void processMove(Direction dir);
+    void updateHardButtonLabel();
     void resetHardModeTimer();
     void makeRandomMove();
     void updateBoxFeedback(QFrame* box, QLabel* title, const QString& baseText, int delta);
