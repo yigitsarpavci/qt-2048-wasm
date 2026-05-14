@@ -10,25 +10,14 @@
     <meta name="viewport" content="width=device-width, height=device-height, user-scalable=0"/>
 
     <title>2048</title>
-    <style>
-      /* Make the html body cover the entire (visual) viewport with no scroll bars. */
-      html, body { padding: 0; margin: 0; overflow: hidden; height: 100% }
-      #screen { width: 100%; height: 100%; }
-    </style>
+    
   <link rel="stylesheet" href="style.css">
 </head>
-  <body onload="init()"><div id="game-container"><div id="qt-container">
-    <figure style="overflow:visible;" id="qtspinner">
-      <center style="margin-top:1.5em; line-height:150%">
-        <img src="qtlogo.svg" width="320" height="200" style="display:block"></img>
-        <strong>Qt for WebAssembly: 2048</strong>
-        <div id="qtstatus"></div>
-        <noscript>JavaScript is disabled. Please enable JavaScript to use this application.</noscript>
-      </center>
-    </figure>
-    <div id="screen"></div>
-
-    </div></div><script type="text/javascript">
+  <body>
+<div id="game-container">
+<div id="qt-container"><canvas id="qt-canvas"></canvas></div>
+</div>
+<script type="text/javascript">
         async function init()
         {
             const spinner = document.querySelector('#qtspinner');
@@ -69,7 +58,7 @@
             }
         }
     </script>
-    <script src="2048.js?v=58ca042"></script>
-    <script type="text/javascript" src="qtloader.js?v=58ca042"></script>
-  </body>
+<script src="2048.js?v=fb97a20"></script>
+<script type="text/javascript" src="qtloader.js?v=fb97a20"></script>
+</body>
 </html>
