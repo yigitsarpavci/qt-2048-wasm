@@ -1,21 +1,21 @@
 /home/runner/work/qt-2048-wasm/qt-2048-wasm/build_clean/2048_autogen/UVLADIE3JM/moc_mainwindow.cpp: /home/runner/work/qt-2048-wasm/qt-2048-wasm/src/mainwindow.h \
   /home/runner/work/qt-2048-wasm/qt-2048-wasm/build_clean/2048_autogen/moc_predefs.h \
-  /home/runner/work/_temp/58cd24c2-5c24-4dd6-9bba-6c574a856b16/emsdk-main/upstream/emscripten/cache/sysroot/include/alloca.h \
-  /home/runner/work/_temp/58cd24c2-5c24-4dd6-9bba-6c574a856b16/emsdk-main/upstream/emscripten/cache/sysroot/include/assert.h \
-  /home/runner/work/_temp/58cd24c2-5c24-4dd6-9bba-6c574a856b16/emsdk-main/upstream/emscripten/cache/sysroot/include/bits/alltypes.h \
-  /home/runner/work/_temp/58cd24c2-5c24-4dd6-9bba-6c574a856b16/emsdk-main/upstream/emscripten/cache/sysroot/include/bits/limits.h \
-  /home/runner/work/_temp/58cd24c2-5c24-4dd6-9bba-6c574a856b16/emsdk-main/upstream/emscripten/cache/sysroot/include/bits/stdint.h \
-  /home/runner/work/_temp/58cd24c2-5c24-4dd6-9bba-6c574a856b16/emsdk-main/upstream/emscripten/cache/sysroot/include/features.h \
-  /home/runner/work/_temp/58cd24c2-5c24-4dd6-9bba-6c574a856b16/emsdk-main/upstream/emscripten/cache/sysroot/include/limits.h \
-  /home/runner/work/_temp/58cd24c2-5c24-4dd6-9bba-6c574a856b16/emsdk-main/upstream/emscripten/cache/sysroot/include/stdarg.h \
-  /home/runner/work/_temp/58cd24c2-5c24-4dd6-9bba-6c574a856b16/emsdk-main/upstream/emscripten/cache/sysroot/include/stdbool.h \
-  /home/runner/work/_temp/58cd24c2-5c24-4dd6-9bba-6c574a856b16/emsdk-main/upstream/emscripten/cache/sysroot/include/stddef.h \
-  /home/runner/work/_temp/58cd24c2-5c24-4dd6-9bba-6c574a856b16/emsdk-main/upstream/emscripten/cache/sysroot/include/stdint.h \
-  /home/runner/work/_temp/58cd24c2-5c24-4dd6-9bba-6c574a856b16/emsdk-main/upstream/emscripten/cache/sysroot/include/stdio.h \
-  /home/runner/work/_temp/58cd24c2-5c24-4dd6-9bba-6c574a856b16/emsdk-main/upstream/emscripten/cache/sysroot/include/stdlib.h \
-  /home/runner/work/_temp/58cd24c2-5c24-4dd6-9bba-6c574a856b16/emsdk-main/upstream/emscripten/cache/sysroot/include/string.h \
-  /home/runner/work/_temp/58cd24c2-5c24-4dd6-9bba-6c574a856b16/emsdk-main/upstream/emscripten/cache/sysroot/include/strings.h \
-  /home/runner/work/_temp/58cd24c2-5c24-4dd6-9bba-6c574a856b16/emsdk-main/upstream/emscripten/cache/sysroot/include/wasi/api.h \
+  /home/runner/work/_temp/267fa8d7-e369-492b-8161-fa56fbd8020c/emsdk-main/upstream/emscripten/cache/sysroot/include/alloca.h \
+  /home/runner/work/_temp/267fa8d7-e369-492b-8161-fa56fbd8020c/emsdk-main/upstream/emscripten/cache/sysroot/include/assert.h \
+  /home/runner/work/_temp/267fa8d7-e369-492b-8161-fa56fbd8020c/emsdk-main/upstream/emscripten/cache/sysroot/include/bits/alltypes.h \
+  /home/runner/work/_temp/267fa8d7-e369-492b-8161-fa56fbd8020c/emsdk-main/upstream/emscripten/cache/sysroot/include/bits/limits.h \
+  /home/runner/work/_temp/267fa8d7-e369-492b-8161-fa56fbd8020c/emsdk-main/upstream/emscripten/cache/sysroot/include/bits/stdint.h \
+  /home/runner/work/_temp/267fa8d7-e369-492b-8161-fa56fbd8020c/emsdk-main/upstream/emscripten/cache/sysroot/include/features.h \
+  /home/runner/work/_temp/267fa8d7-e369-492b-8161-fa56fbd8020c/emsdk-main/upstream/emscripten/cache/sysroot/include/limits.h \
+  /home/runner/work/_temp/267fa8d7-e369-492b-8161-fa56fbd8020c/emsdk-main/upstream/emscripten/cache/sysroot/include/stdarg.h \
+  /home/runner/work/_temp/267fa8d7-e369-492b-8161-fa56fbd8020c/emsdk-main/upstream/emscripten/cache/sysroot/include/stdbool.h \
+  /home/runner/work/_temp/267fa8d7-e369-492b-8161-fa56fbd8020c/emsdk-main/upstream/emscripten/cache/sysroot/include/stddef.h \
+  /home/runner/work/_temp/267fa8d7-e369-492b-8161-fa56fbd8020c/emsdk-main/upstream/emscripten/cache/sysroot/include/stdint.h \
+  /home/runner/work/_temp/267fa8d7-e369-492b-8161-fa56fbd8020c/emsdk-main/upstream/emscripten/cache/sysroot/include/stdio.h \
+  /home/runner/work/_temp/267fa8d7-e369-492b-8161-fa56fbd8020c/emsdk-main/upstream/emscripten/cache/sysroot/include/stdlib.h \
+  /home/runner/work/_temp/267fa8d7-e369-492b-8161-fa56fbd8020c/emsdk-main/upstream/emscripten/cache/sysroot/include/string.h \
+  /home/runner/work/_temp/267fa8d7-e369-492b-8161-fa56fbd8020c/emsdk-main/upstream/emscripten/cache/sysroot/include/strings.h \
+  /home/runner/work/_temp/267fa8d7-e369-492b-8161-fa56fbd8020c/emsdk-main/upstream/emscripten/cache/sysroot/include/wasi/api.h \
   /home/runner/work/qt-2048-wasm/qt-2048-wasm/Qt/6.6.1/wasm_singlethread/include/QtCore/QParallelAnimationGroup \
   /home/runner/work/qt-2048-wasm/qt-2048-wasm/Qt/6.6.1/wasm_singlethread/include/QtCore/QPropertyAnimation \
   /home/runner/work/qt-2048-wasm/qt-2048-wasm/Qt/6.6.1/wasm_singlethread/include/QtCore/QTimer \
