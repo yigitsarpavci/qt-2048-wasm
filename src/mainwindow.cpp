@@ -100,30 +100,23 @@ MainWindow::MainWindow(QWidget *parent)
 
 void MainWindow::setupUI() {
     setWindowTitle("2048");
-    setMinimumSize(420, 680); 
+    setMinimumSize(420, 700); 
     setStyleSheet("background-color: #faf8ef;");
 
-    // Main layout with horizontal centering
-    auto *rootLayout = new QHBoxLayout(this);
-    rootLayout->setContentsMargins(0, 0, 0, 0);
-    rootLayout->setSpacing(0);
-
-    // Centered content container
-    auto *centralContainer = new QWidget(this);
-    centralContainer->setFixedWidth(450); // Matches original 2048 desktop width
-    rootLayout->addStretch();
-    rootLayout->addWidget(centralContainer);
-    rootLayout->addStretch();
-
-    auto *mainLayout = new QVBoxLayout(centralContainer);
+    // Simplify layout: Single centered column
+    auto *mainLayout = new QVBoxLayout(this);
     mainLayout->setContentsMargins(15, 20, 15, 20);
-    mainLayout->setSpacing(12);
+    mainLayout->setSpacing(15);
+    mainLayout->setAlignment(Qt::AlignTop | Qt::AlignHCenter);
 
     // --- Header ---
-    auto *headerRow = new QHBoxLayout();
+    auto *headerWidget = new QWidget(this);
+    headerWidget->setFixedWidth(420);
+    auto *headerRow = new QHBoxLayout(headerWidget);
+    headerRow->setContentsMargins(0, 0, 0, 0);
     headerRow->setSpacing(0);
     
-    auto *titleContainer = new QWidget(this);
+    auto *titleContainer = new QWidget(headerWidget);
     auto *titleGroup = new QVBoxLayout(titleContainer);
     titleGroup->setContentsMargins(0,0,0,0);
     titleGroup->setSpacing(2);
@@ -140,28 +133,26 @@ void MainWindow::setupUI() {
     scoreRow->setSpacing(8);
     scoreRow->setAlignment(Qt::AlignRight | Qt::AlignTop);
 
-    auto createScoreBox = [this](const QString& titleText, QLabel** labelPtr) {
+    auto createScoreBox = [this](const QString& titleText, QLabel** labelPtr, QLabel** titlePtr) {
         auto *box = new QFrame();
         box->setFixedSize(100, 65);
         box->setStyleSheet("background-color: #bbada0; border-radius: 6px;");
         auto *v = new QVBoxLayout(box);
         v->setContentsMargins(5, 8, 5, 8);
         v->setSpacing(0);
-        auto *t = new QLabel(titleText, box);
-        t->setAlignment(Qt::AlignCenter);
-        t->setStyleSheet("color: #eee4da; font-size: 13px; font-weight: bold; text-transform: uppercase;");
+        *titlePtr = new QLabel(titleText, box);
+        (*titlePtr)->setAlignment(Qt::AlignCenter);
+        (*titlePtr)->setStyleSheet("color: #eee4da; font-size: 13px; font-weight: bold; text-transform: uppercase;");
         *labelPtr = new QLabel("0", box);
         (*labelPtr)->setAlignment(Qt::AlignCenter);
         (*labelPtr)->setStyleSheet("color: white; font-size: 22px; font-weight: bold;");
-        v->addWidget(t);
+        v->addWidget(*titlePtr);
         v->addWidget(*labelPtr);
         return box;
     };
 
-    m_scoreBox = createScoreBox("SCORE", &m_scoreLabel);
-    m_scoreTitle = m_scoreBox->findChild<QLabel*>(); // Hack to get the first label
-    m_bestBox = createScoreBox("BEST", &m_bestScoreLabel);
-    m_bestTitle = m_bestBox->findChild<QLabel*>();
+    m_scoreBox = createScoreBox("SCORE", &m_scoreLabel, &m_scoreTitle);
+    m_bestBox = createScoreBox("BEST", &m_bestScoreLabel, &m_bestTitle);
 
     scoreRow->addWidget(m_scoreBox);
     scoreRow->addWidget(m_bestBox);
@@ -169,18 +160,21 @@ void MainWindow::setupUI() {
     headerRow->addWidget(titleContainer);
     headerRow->addStretch();
     headerRow->addLayout(scoreRow);
-    mainLayout->addLayout(headerRow);
+    mainLayout->addWidget(headerWidget, 0, Qt::AlignCenter);
 
     // --- Buttons Section ---
-    auto *actionRow = new QHBoxLayout();
+    auto *actionWidget = new QWidget(this);
+    actionWidget->setFixedWidth(420);
+    auto *actionRow = new QHBoxLayout(actionWidget);
+    actionRow->setContentsMargins(0, 0, 0, 0);
     actionRow->setSpacing(10);
     
     QString actionStyle = "QPushButton { background-color: #8f7a66; color: #f9f6f2; font-weight: bold; border-radius: 4px; font-size: 16px; border: none; padding: 10px; } "
                           "QPushButton:hover { background-color: #9f8a76; } "
                           "QPushButton:pressed { background-color: #7f6a56; }";
     
-    m_restartBtn = new QPushButton("New Game", this);
-    m_undoBtn = new QPushButton("Undo", this);
+    m_restartBtn = new QPushButton("New Game (R)", this);
+    m_undoBtn = new QPushButton("Undo (U)", this);
     m_restartBtn->setFixedHeight(45);
     m_undoBtn->setFixedHeight(45);
     m_restartBtn->setStyleSheet(actionStyle);
@@ -190,13 +184,16 @@ void MainWindow::setupUI() {
     
     actionRow->addWidget(m_restartBtn, 2);
     actionRow->addWidget(m_undoBtn, 1);
-    mainLayout->addLayout(actionRow);
+    mainLayout->addWidget(actionWidget, 0, Qt::AlignCenter);
 
-    auto *modeRow = new QHBoxLayout();
+    auto *modeWidget = new QWidget(this);
+    modeWidget->setFixedWidth(420);
+    auto *modeRow = new QHBoxLayout(modeWidget);
+    modeRow->setContentsMargins(0, 0, 0, 0);
     modeRow->setSpacing(8);
-    m_normalBtn = new QPushButton("Normal", this);
-    m_unlimitedBtn = new QPushButton("Unlimited", this);
-    m_hardBtn = new QPushButton("Hard", this);
+    m_normalBtn = new QPushButton("Normal (1)", this);
+    m_unlimitedBtn = new QPushButton("Unlimited (2)", this);
+    m_hardBtn = new QPushButton("Hard (3)", this);
     
     auto styleMode = [](QPushButton* b) {
         b->setFixedHeight(36);
@@ -207,7 +204,8 @@ void MainWindow::setupUI() {
     modeRow->addWidget(m_normalBtn);
     modeRow->addWidget(m_unlimitedBtn);
     modeRow->addWidget(m_hardBtn);
-    mainLayout->addLayout(modeRow);
+    mainLayout->addWidget(modeWidget, 0, Qt::AlignCenter);
+
 
     // --- Grid Area ---
     m_gridWrapper = new QFrame(this);
@@ -229,22 +227,26 @@ void MainWindow::setupUI() {
     
     m_overlay = new QFrame(m_gridContainer);
     m_overlay->setGeometry(0, 0, 420, 420);
-    m_overlay->setStyleSheet("background-color: rgba(238, 228, 218, 0.75); border-radius: 6px;");
+    m_overlay->setStyleSheet("background-color: rgba(238, 228, 218, 0.85); border-radius: 6px;");
     auto *vo = new QVBoxLayout(m_overlay);
     vo->setAlignment(Qt::AlignCenter);
+    vo->setSpacing(10);
     
     m_overlayLabel = new QLabel("You Win!", m_overlay);
     m_overlayLabel->setStyleSheet("color: #776e65; font-size: 52px; font-weight: bold;");
     m_overlayScore = new QLabel("Score: 0", m_overlay);
     m_overlayScore->setStyleSheet("color: #776e65; font-size: 20px; font-weight: bold;");
+    m_overlayBest = new QLabel("Best: 0", m_overlay);
+    m_overlayBest->setStyleSheet("color: #776e65; font-size: 18px;");
     
-    auto *toRestart = new QPushButton("Try Again", m_overlay);
+    auto *toRestart = new QPushButton("Try Again (R)", m_overlay);
     toRestart->setFixedSize(140, 45);
     toRestart->setStyleSheet(actionStyle);
     
     vo->addWidget(m_overlayLabel, 0, Qt::AlignCenter);
     vo->addWidget(m_overlayScore, 0, Qt::AlignCenter);
-    vo->addSpacing(20);
+    vo->addWidget(m_overlayBest, 0, Qt::AlignCenter);
+    vo->addSpacing(15);
     vo->addWidget(toRestart, 0, Qt::AlignCenter);
     m_overlay->hide();
     
@@ -268,7 +270,16 @@ void MainWindow::setupUI() {
     };
     connect(m_restartBtn, &QPushButton::clicked, this, atomicReset);
     connect(toRestart, &QPushButton::clicked, this, atomicReset);
-    connect(m_undoBtn, &QPushButton::clicked, this, [this]() { if (!m_isAnimating && !m_isGameOver) { m_engine.undo(); m_lastScore = m_engine.getScore(); updateUI(); } });
+    connect(m_undoBtn, &QPushButton::clicked, this, [this]() { 
+        if (!m_isAnimating && !m_isGameOver && m_engine.getHistoryDepth() > 0) { 
+            m_engine.undo(); 
+            m_lastScore = m_engine.getScore(); 
+            // Anti-cheat: Don't reset Hard Mode timer on undo
+            m_preventTimerReset = true;
+            updateUI(); 
+            m_preventTimerReset = false;
+        } 
+    });
     
     connect(m_normalBtn, &QPushButton::clicked, this, [this]() { if (m_engine.getScore()==0 || m_isGameOver) { m_mode = GameMode::Normal; updateUI(); resetHardModeTimer(); } });
     connect(m_unlimitedBtn, &QPushButton::clicked, this, [this]() { if (m_engine.getScore()==0 || m_isGameOver) { m_mode = GameMode::Unlimited; updateUI(); resetHardModeTimer(); } });
@@ -279,6 +290,8 @@ void MainWindow::setupUI() {
         m_bestBaseRect = m_bestBox->geometry();
     });
 }
+
+
 
 void MainWindow::updateBoxFeedback(QFrame* box, QLabel* title, const QString& baseText, int delta) {
     if (!box || !title || delta <= 0) return;
@@ -432,6 +445,7 @@ bool MainWindow::event(QEvent *event) {
 }
 
 void MainWindow::resetHardModeTimer() {
+    if (m_preventTimerReset) return;
     m_hardModeTimer->stop(); m_displayTimer->stop();
     m_hardBtn->setText("Hard (3)");
     if (m_mode == GameMode::Hard && !m_isGameOver) { m_hardModeTimer->start(5000); m_timeLeftMs = 5000; m_displayTimer->start(100); }

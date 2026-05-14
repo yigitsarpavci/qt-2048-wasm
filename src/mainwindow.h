@@ -97,6 +97,7 @@ private:
     int m_lastBestScore = 0;
     int m_currentMoveId = 0;
     int m_timeLeftMs = 5000;
+    bool m_preventTimerReset = false;
 
     QFrame *m_scoreBox, *m_bestBox;
     QLabel *m_scoreTitle, *m_bestTitle;
