@@ -10,12 +10,12 @@
 		"/usr/local/share/cmake-3.31/Modules/CMakeDetermineSystem.cmake",
 		"/home/runner/work/qt-2048-wasm/qt-2048-wasm/Qt/6.6.1/wasm_singlethread/lib/cmake/Qt6/qt.toolchain.cmake",
 		"/home/runner/work/qt-2048-wasm/qt-2048-wasm/Qt/6.6.1/wasm_singlethread/lib/cmake/Qt6/QtPublicWasmToolchainHelpers.cmake",
-		"/home/runner/work/_temp/267fa8d7-e369-492b-8161-fa56fbd8020c/emsdk-main/upstream/emscripten/cmake/Modules/Platform/Emscripten.cmake",
+		"/home/runner/work/_temp/85e0678f-db66-4bc0-8643-616764556fcf/emsdk-main/upstream/emscripten/cmake/Modules/Platform/Emscripten.cmake",
 		"/usr/local/share/cmake-3.31/Modules/CMakeSystem.cmake.in",
 		"/home/runner/work/qt-2048-wasm/qt-2048-wasm/build_clean/CMakeFiles/3.31.6/CMakeSystem.cmake",
 		"/home/runner/work/qt-2048-wasm/qt-2048-wasm/Qt/6.6.1/wasm_singlethread/lib/cmake/Qt6/qt.toolchain.cmake",
 		"/home/runner/work/qt-2048-wasm/qt-2048-wasm/Qt/6.6.1/wasm_singlethread/lib/cmake/Qt6/QtPublicWasmToolchainHelpers.cmake",
-		"/home/runner/work/_temp/267fa8d7-e369-492b-8161-fa56fbd8020c/emsdk-main/upstream/emscripten/cmake/Modules/Platform/Emscripten.cmake",
+		"/home/runner/work/_temp/85e0678f-db66-4bc0-8643-616764556fcf/emsdk-main/upstream/emscripten/cmake/Modules/Platform/Emscripten.cmake",
 		"/usr/local/share/cmake-3.31/Modules/CMakeUnixFindMake.cmake",
 		"/usr/local/share/cmake-3.31/Modules/CMakeSystemSpecificInitialize.cmake",
 		"/usr/local/share/cmake-3.31/Modules/CMakeDetermineCXXCompiler.cmake",
@@ -27,7 +27,7 @@
 		"/usr/local/share/cmake-3.31/Modules/CMakeSystemSpecificInformation.cmake",
 		"/usr/local/share/cmake-3.31/Modules/CMakeGenericSystem.cmake",
 		"/usr/local/share/cmake-3.31/Modules/CMakeInitializeConfigs.cmake",
-		"/home/runner/work/_temp/267fa8d7-e369-492b-8161-fa56fbd8020c/emsdk-main/upstream/emscripten/cmake/Modules/Platform/Emscripten.cmake",
+		"/home/runner/work/_temp/85e0678f-db66-4bc0-8643-616764556fcf/emsdk-main/upstream/emscripten/cmake/Modules/Platform/Emscripten.cmake",
 		"/usr/local/share/cmake-3.31/Modules/CMakeCXXInformation.cmake",
 		"/usr/local/share/cmake-3.31/Modules/CMakeLanguageInformation.cmake",
 		"/usr/local/share/cmake-3.31/Modules/Compiler/Clang-CXX.cmake",
@@ -35,7 +35,7 @@
 		"/usr/local/share/cmake-3.31/Modules/Compiler/CMakeCommonCompilerMacros.cmake",
 		"/usr/local/share/cmake-3.31/Modules/Compiler/GNU.cmake",
 		"/usr/local/share/cmake-3.31/Modules/Compiler/CMakeCommonCompilerMacros.cmake",
-		"/home/runner/work/_temp/267fa8d7-e369-492b-8161-fa56fbd8020c/emsdk-main/upstream/emscripten/cmake/Modules/Platform/Emscripten.cmake",
+		"/home/runner/work/_temp/85e0678f-db66-4bc0-8643-616764556fcf/emsdk-main/upstream/emscripten/cmake/Modules/Platform/Emscripten.cmake",
 		"/usr/local/share/cmake-3.31/Modules/CMakeCommonLanguageInclude.cmake",
 		"/usr/local/share/cmake-3.31/Modules/CMakeTestCXXCompiler.cmake",
 		"/usr/local/share/cmake-3.31/Modules/Internal/CMakeCXXLinkerInformation.cmake",
@@ -368,7 +368,7 @@
 		"/home/runner/work/qt-2048-wasm/qt-2048-wasm/Qt/6.6.1/wasm_singlethread/mkspecs/wasm-emscripten",
 		"/home/runner/work/qt-2048-wasm/qt-2048-wasm/Qt/6.6.1/wasm_singlethread/include/QtWidgets",
 		"/home/runner/work/qt-2048-wasm/qt-2048-wasm/Qt/6.6.1/wasm_singlethread/include/QtGui",
-		"/home/runner/work/_temp/267fa8d7-e369-492b-8161-fa56fbd8020c/emsdk-main/upstream/emscripten/cache/sysroot/include"
+		"/home/runner/work/_temp/85e0678f-db66-4bc0-8643-616764556fcf/emsdk-main/upstream/emscripten/cache/sysroot/include"
 	],
 	"MOC_MACRO_NAMES" : 
 	[
@@ -382,7 +382,7 @@
 	"MOC_PATH_PREFIX" : false,
 	"MOC_PREDEFS_CMD" : 
 	[
-		"/home/runner/work/_temp/267fa8d7-e369-492b-8161-fa56fbd8020c/emsdk-main/upstream/emscripten/em++",
+		"/home/runner/work/_temp/85e0678f-db66-4bc0-8643-616764556fcf/emsdk-main/upstream/emscripten/em++",
 		"-std=gnu++17",
 		"-dM",
 		"-E",
