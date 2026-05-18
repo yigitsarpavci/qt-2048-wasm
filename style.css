@@ -79,6 +79,15 @@ canvas {
     color: var(--text-color);
 }
 
+/* Prevent persistent blue focus outlines on mouse-clicked elements.
+   Keyboard users still see focus via :focus-visible. */
+button:focus:not(:focus-visible),
+[role="button"]:focus:not(:focus-visible),
+input:focus:not(:focus-visible) {
+    outline: none;
+    box-shadow: none;
+}
+
 /* Hide potential scrollbars */
 ::-webkit-scrollbar {
     display: none;

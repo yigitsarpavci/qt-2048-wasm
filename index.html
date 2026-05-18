@@ -65,7 +65,41 @@
             }
         }
     </script>
-    <script src="2048.js?v=d81ba93"></script>
-    <script type="text/javascript" src="qtloader.js?v=d81ba93"></script>
-  </div></body>
+    <script src="2048.js?v=7f5c2da"></script>
+    <script type="text/javascript" src="qtloader.js?v=7f5c2da"></script>
+  </div>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Refocus canvas after any button/interactive element click
+    document.addEventListener('click', function(e) {
+        var btn = e.target.closest('button, [role="button"], input[type="button"]');
+        if (btn) {
+            setTimeout(function() {
+                btn.blur();
+                var c = document.querySelector('canvas');
+                if (c) c.focus();
+            }, 50);
+        }
+    }, true);
+
+    // Clicking anywhere inside game-container should refocus canvas
+    var gc = document.getElementById('game-container');
+    if (gc) {
+        gc.addEventListener('click', function() {
+            setTimeout(function() {
+                var c = document.querySelector('canvas');
+                if (c) c.focus();
+            }, 100);
+        });
+    }
+
+    // Prevent arrow keys and space from scrolling or moving browser focus
+    document.addEventListener('keydown', function(e) {
+        if (['ArrowUp','ArrowDown','ArrowLeft','ArrowRight','Space',' '].indexOf(e.key) !== -1) {
+            e.preventDefault();
+        }
+    });
+});
+</script>
+</body>
 </html>
