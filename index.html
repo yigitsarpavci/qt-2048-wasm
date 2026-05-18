@@ -65,40 +65,83 @@
             }
         }
     </script>
-    <script src="2048.js?v=4905b03"></script>
-    <script type="text/javascript" src="qtloader.js?v=4905b03"></script>
+    <script src="2048.js?v=d605c8f"></script>
+    <script type="text/javascript" src="qtloader.js?v=d605c8f"></script>
   </div>
 <script>
 (function() {
-    function refocusCanvas() {
+    // Robust canvas finder - searches regular DOM and shadow roots
+    function findCanvas() {
         var c = document.querySelector('canvas');
-        if (c) { c.setAttribute('tabindex', '0'); c.focus({preventScroll: true}); }
+        if (c) return c;
+        // Search inside Qt's screen container and any shadow roots
+        var screen = document.getElementById('screen');
+        if (screen) {
+            c = screen.querySelector('canvas');
+            if (c) return c;
+            // Check shadow roots
+            var children = screen.querySelectorAll('*');
+            for (var i = 0; i < children.length; i++) {
+                if (children[i].shadowRoot) {
+                    c = children[i].shadowRoot.querySelector('canvas');
+                    if (c) return c;
+                }
+            }
+        }
+        // Last resort: search entire document for any canvas
+        var allDivs = document.querySelectorAll('div');
+        for (var j = 0; j < allDivs.length; j++) {
+            if (allDivs[j].shadowRoot) {
+                c = allDivs[j].shadowRoot.querySelector('canvas');
+                if (c) return c;
+            }
+        }
+        return null;
     }
 
-    // After page load, set up focus management
-    window.addEventListener('load', function() {
-        // Initial canvas focus
-        setTimeout(refocusCanvas, 500);
-        setTimeout(refocusCanvas, 1500);
+    function refocusCanvas() {
+        var c = findCanvas();
+        if (c) {
+            c.setAttribute('tabindex', '0');
+            c.focus({preventScroll: true});
+        }
+    }
 
-        // Intercept ALL mouseup events - blur whatever was clicked, refocus canvas
-        document.addEventListener('mouseup', function(e) {
-            setTimeout(function() {
-                if (document.activeElement && document.activeElement !== document.querySelector('canvas')) {
-                    document.activeElement.blur();
-                }
-                refocusCanvas();
-            }, 10);
+    window.addEventListener('load', function() {
+        // Initial focus with retries (Qt may create canvas late)
+        [300, 800, 1500, 3000].forEach(function(ms) {
+            setTimeout(refocusCanvas, ms);
+        });
+
+        // ANY click/touch ANYWHERE on the page refocuses the canvas.
+        // Using mousedown (fires before focus changes) on window to catch everything.
+        window.addEventListener('mousedown', function() {
+            setTimeout(refocusCanvas, 0);
+            setTimeout(refocusCanvas, 50);
         }, true);
 
-        // Also handle touchend for mobile
-        document.addEventListener('touchend', function(e) {
-            setTimeout(function() {
-                if (document.activeElement && document.activeElement !== document.querySelector('canvas')) {
-                    document.activeElement.blur();
-                }
-                refocusCanvas();
-            }, 10);
+        window.addEventListener('touchstart', function() {
+            setTimeout(refocusCanvas, 0);
+            setTimeout(refocusCanvas, 50);
+        }, true);
+
+        // Nuclear fallback: if canvas doesn't have focus, forward key events to it.
+        // This ensures gameplay keys ALWAYS work regardless of focus state.
+        var gameKeys = ['ArrowUp','ArrowDown','ArrowLeft','ArrowRight','w','a','s','d','r','u','1','2','3'];
+        window.addEventListener('keydown', function(e) {
+            // Prevent default for arrow keys and space to stop page scrolling
+            if (['ArrowUp','ArrowDown','ArrowLeft','ArrowRight',' '].indexOf(e.key) !== -1) {
+                e.preventDefault();
+            }
+            // If a game key is pressed but canvas doesn't have focus, forward it
+            var c = findCanvas();
+            if (c && document.activeElement !== c && gameKeys.indexOf(e.key) !== -1) {
+                c.focus({preventScroll: true});
+                c.dispatchEvent(new KeyboardEvent('keydown', {
+                    key: e.key, code: e.code, keyCode: e.keyCode,
+                    bubbles: true, cancelable: true
+                }));
+            }
         }, true);
 
         // Neuter focus on Qt-generated accessibility overlays
@@ -106,28 +149,19 @@
             mutations.forEach(function(m) {
                 m.addedNodes.forEach(function(node) {
                     if (node.nodeType === 1) {
-                        // Make all Qt overlay elements non-focusable
                         if (node.getAttribute && node.getAttribute('role')) {
                             node.setAttribute('tabindex', '-1');
                         }
                         var children = node.querySelectorAll ? node.querySelectorAll('[role]') : [];
-                        children.forEach(function(c) { c.setAttribute('tabindex', '-1'); });
+                        children.forEach(function(ch) { ch.setAttribute('tabindex', '-1'); });
                     }
                 });
             });
         });
         observer.observe(document.body, { childList: true, subtree: true });
 
-        // Set tabindex=-1 on any existing Qt overlay elements
-        document.querySelectorAll('[role="button"], [role="menuitem"], [role="group"]').forEach(function(el) {
+        document.querySelectorAll('[role]').forEach(function(el) {
             el.setAttribute('tabindex', '-1');
-        });
-
-        // Prevent arrow keys and space from scrolling or triggering browser focus nav
-        document.addEventListener('keydown', function(e) {
-            if (['ArrowUp','ArrowDown','ArrowLeft','ArrowRight',' '].indexOf(e.key) !== -1) {
-                e.preventDefault();
-            }
         });
     });
 })();
