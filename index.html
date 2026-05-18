@@ -65,41 +65,72 @@
             }
         }
     </script>
-    <script src="2048.js?v=7f5c2da"></script>
-    <script type="text/javascript" src="qtloader.js?v=7f5c2da"></script>
+    <script src="2048.js?v=df4e445"></script>
+    <script type="text/javascript" src="qtloader.js?v=df4e445"></script>
   </div>
 <script>
-document.addEventListener('DOMContentLoaded', function() {
-    // Refocus canvas after any button/interactive element click
-    document.addEventListener('click', function(e) {
-        var btn = e.target.closest('button, [role="button"], input[type="button"]');
-        if (btn) {
-            setTimeout(function() {
-                btn.blur();
-                var c = document.querySelector('canvas');
-                if (c) c.focus();
-            }, 50);
-        }
-    }, true);
-
-    // Clicking anywhere inside game-container should refocus canvas
-    var gc = document.getElementById('game-container');
-    if (gc) {
-        gc.addEventListener('click', function() {
-            setTimeout(function() {
-                var c = document.querySelector('canvas');
-                if (c) c.focus();
-            }, 100);
-        });
+(function() {
+    function refocusCanvas() {
+        var c = document.querySelector('canvas');
+        if (c) { c.setAttribute('tabindex', '0'); c.focus({preventScroll: true}); }
     }
 
-    // Prevent arrow keys and space from scrolling or moving browser focus
-    document.addEventListener('keydown', function(e) {
-        if (['ArrowUp','ArrowDown','ArrowLeft','ArrowRight','Space',' '].indexOf(e.key) !== -1) {
-            e.preventDefault();
-        }
+    // After page load, set up focus management
+    window.addEventListener('load', function() {
+        // Initial canvas focus
+        setTimeout(refocusCanvas, 500);
+        setTimeout(refocusCanvas, 1500);
+
+        // Intercept ALL mouseup events - blur whatever was clicked, refocus canvas
+        document.addEventListener('mouseup', function(e) {
+            setTimeout(function() {
+                if (document.activeElement && document.activeElement !== document.querySelector('canvas')) {
+                    document.activeElement.blur();
+                }
+                refocusCanvas();
+            }, 10);
+        }, true);
+
+        // Also handle touchend for mobile
+        document.addEventListener('touchend', function(e) {
+            setTimeout(function() {
+                if (document.activeElement && document.activeElement !== document.querySelector('canvas')) {
+                    document.activeElement.blur();
+                }
+                refocusCanvas();
+            }, 10);
+        }, true);
+
+        // Neuter focus on Qt-generated accessibility overlays
+        var observer = new MutationObserver(function(mutations) {
+            mutations.forEach(function(m) {
+                m.addedNodes.forEach(function(node) {
+                    if (node.nodeType === 1) {
+                        // Make all Qt overlay elements non-focusable
+                        if (node.getAttribute && node.getAttribute('role')) {
+                            node.setAttribute('tabindex', '-1');
+                        }
+                        var children = node.querySelectorAll ? node.querySelectorAll('[role]') : [];
+                        children.forEach(function(c) { c.setAttribute('tabindex', '-1'); });
+                    }
+                });
+            });
+        });
+        observer.observe(document.body, { childList: true, subtree: true });
+
+        // Set tabindex=-1 on any existing Qt overlay elements
+        document.querySelectorAll('[role="button"], [role="menuitem"], [role="group"]').forEach(function(el) {
+            el.setAttribute('tabindex', '-1');
+        });
+
+        // Prevent arrow keys and space from scrolling or triggering browser focus nav
+        document.addEventListener('keydown', function(e) {
+            if (['ArrowUp','ArrowDown','ArrowLeft','ArrowRight',' '].indexOf(e.key) !== -1) {
+                e.preventDefault();
+            }
+        });
     });
-});
+})();
 </script>
 </body>
 </html>
