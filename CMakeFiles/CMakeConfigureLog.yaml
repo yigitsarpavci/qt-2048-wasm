@@ -28,14 +28,14 @@ events:
     checks:
       - "Performing Test HAVE_STDATOMIC"
     directories:
-      source: "/home/runner/work/qt-2048-wasm/qt-2048-wasm/build_clean/CMakeFiles/CMakeScratch/TryCompile-6cXggx"
-      binary: "/home/runner/work/qt-2048-wasm/qt-2048-wasm/build_clean/CMakeFiles/CMakeScratch/TryCompile-6cXggx"
+      source: "/home/runner/work/qt-2048-wasm/qt-2048-wasm/build_clean/CMakeFiles/CMakeScratch/TryCompile-cGR5EA"
+      binary: "/home/runner/work/qt-2048-wasm/qt-2048-wasm/build_clean/CMakeFiles/CMakeScratch/TryCompile-cGR5EA"
     cmakeVariables:
       CMAKE_CXX_COMPILER_CLANG_SCAN_DEPS: "/usr/bin/clang-scan-deps-17"
       CMAKE_CXX_FLAGS: ""
       CMAKE_CXX_FLAGS_DEBUG: "-g"
       CMAKE_EXE_LINKER_FLAGS: ""
-      CMAKE_MODULE_PATH: "/home/runner/work/qt-2048-wasm/qt-2048-wasm/Qt/6.6.1/wasm_singlethread/lib/cmake/Qt6/platforms;/home/runner/work/qt-2048-wasm/qt-2048-wasm/Qt/6.6.1/wasm_singlethread/lib/cmake/Qt6/platforms;/home/runner/work/_temp/4e0dca98-ba58-46fc-8bc5-54405d93714f/emsdk-main/upstream/emscripten/cmake/Modules;/home/runner/work/_temp/4e0dca98-ba58-46fc-8bc5-54405d93714f/emsdk-main/upstream/emscripten/cmake/Modules;/home/runner/work/_temp/4e0dca98-ba58-46fc-8bc5-54405d93714f/emsdk-main/upstream/emscripten/cmake/Modules;/home/runner/work/_temp/4e0dca98-ba58-46fc-8bc5-54405d93714f/emsdk-main/upstream/emscripten/cmake/Modules;/home/runner/work/qt-2048-wasm/qt-2048-wasm/Qt/6.6.1/wasm_singlethread/lib/cmake/Qt6;/home/runner/work/qt-2048-wasm/qt-2048-wasm/Qt/6.6.1/wasm_singlethread/lib/cmake/Qt6/3rdparty/extra-cmake-modules/find-modules;/home/runner/work/qt-2048-wasm/qt-2048-wasm/Qt/6.6.1/wasm_singlethread/lib/cmake/Qt6/3rdparty/kwin"
+      CMAKE_MODULE_PATH: "/home/runner/work/qt-2048-wasm/qt-2048-wasm/Qt/6.6.1/wasm_singlethread/lib/cmake/Qt6/platforms;/home/runner/work/qt-2048-wasm/qt-2048-wasm/Qt/6.6.1/wasm_singlethread/lib/cmake/Qt6/platforms;/home/runner/work/_temp/ba9df090-0885-4ef3-8c7f-f60b7b9a1659/emsdk-main/upstream/emscripten/cmake/Modules;/home/runner/work/_temp/ba9df090-0885-4ef3-8c7f-f60b7b9a1659/emsdk-main/upstream/emscripten/cmake/Modules;/home/runner/work/_temp/ba9df090-0885-4ef3-8c7f-f60b7b9a1659/emsdk-main/upstream/emscripten/cmake/Modules;/home/runner/work/_temp/ba9df090-0885-4ef3-8c7f-f60b7b9a1659/emsdk-main/upstream/emscripten/cmake/Modules;/home/runner/work/qt-2048-wasm/qt-2048-wasm/Qt/6.6.1/wasm_singlethread/lib/cmake/Qt6;/home/runner/work/qt-2048-wasm/qt-2048-wasm/Qt/6.6.1/wasm_singlethread/lib/cmake/Qt6/3rdparty/extra-cmake-modules/find-modules;/home/runner/work/qt-2048-wasm/qt-2048-wasm/Qt/6.6.1/wasm_singlethread/lib/cmake/Qt6/3rdparty/kwin"
       QT_ADDITIONAL_PACKAGES_PREFIX_PATH: ""
       QT_CHAINLOAD_TOOLCHAIN_FILE: ""
       QT_TOOLCHAIN_INCLUDE_FILE: ""
@@ -45,20 +45,20 @@ events:
       variable: "HAVE_STDATOMIC"
       cached: true
       stdout: |
-        Change Dir: '/home/runner/work/qt-2048-wasm/qt-2048-wasm/build_clean/CMakeFiles/CMakeScratch/TryCompile-6cXggx'
+        Change Dir: '/home/runner/work/qt-2048-wasm/qt-2048-wasm/build_clean/CMakeFiles/CMakeScratch/TryCompile-cGR5EA'
         
-        Run Build Command(s): /usr/local/bin/cmake -E env VERBOSE=1 /usr/bin/gmake -f Makefile cmTC_074b5/fast
-        /usr/bin/gmake  -f CMakeFiles/cmTC_074b5.dir/build.make CMakeFiles/cmTC_074b5.dir/build
-        gmake[1]: Entering directory '/home/runner/work/qt-2048-wasm/qt-2048-wasm/build_clean/CMakeFiles/CMakeScratch/TryCompile-6cXggx'
-        Building CXX object CMakeFiles/cmTC_074b5.dir/src.cxx.o
-        /home/runner/work/_temp/4e0dca98-ba58-46fc-8bc5-54405d93714f/emsdk-main/upstream/emscripten/em++ -DHAVE_STDATOMIC  -std=gnu++17 -MD -MT CMakeFiles/cmTC_074b5.dir/src.cxx.o -MF CMakeFiles/cmTC_074b5.dir/src.cxx.o.d -o CMakeFiles/cmTC_074b5.dir/src.cxx.o -c /home/runner/work/qt-2048-wasm/qt-2048-wasm/build_clean/CMakeFiles/CMakeScratch/TryCompile-6cXggx/src.cxx
+        Run Build Command(s): /usr/local/bin/cmake -E env VERBOSE=1 /usr/bin/gmake -f Makefile cmTC_815c8/fast
+        /usr/bin/gmake  -f CMakeFiles/cmTC_815c8.dir/build.make CMakeFiles/cmTC_815c8.dir/build
+        gmake[1]: Entering directory '/home/runner/work/qt-2048-wasm/qt-2048-wasm/build_clean/CMakeFiles/CMakeScratch/TryCompile-cGR5EA'
+        Building CXX object CMakeFiles/cmTC_815c8.dir/src.cxx.o
+        /home/runner/work/_temp/ba9df090-0885-4ef3-8c7f-f60b7b9a1659/emsdk-main/upstream/emscripten/em++ -DHAVE_STDATOMIC  -std=gnu++17 -MD -MT CMakeFiles/cmTC_815c8.dir/src.cxx.o -MF CMakeFiles/cmTC_815c8.dir/src.cxx.o.d -o CMakeFiles/cmTC_815c8.dir/src.cxx.o -c /home/runner/work/qt-2048-wasm/qt-2048-wasm/build_clean/CMakeFiles/CMakeScratch/TryCompile-cGR5EA/src.cxx
         shared:INFO: (Emscripten: Running sanity checks)
-        Linking CXX executable cmTC_074b5.js
-        /usr/local/bin/cmake -E cmake_link_script CMakeFiles/cmTC_074b5.dir/link.txt --verbose=1
-        cache:INFO: generating system asset: symbol_lists/5080d7f1cb92339cb6082081a23a88daa6ae6ad4.json... (this will be cached in "/home/runner/work/_temp/4e0dca98-ba58-46fc-8bc5-54405d93714f/emsdk-main/upstream/emscripten/cache/symbol_lists/5080d7f1cb92339cb6082081a23a88daa6ae6ad4.json" for subsequent builds)
+        Linking CXX executable cmTC_815c8.js
+        /usr/local/bin/cmake -E cmake_link_script CMakeFiles/cmTC_815c8.dir/link.txt --verbose=1
+        cache:INFO: generating system asset: symbol_lists/5080d7f1cb92339cb6082081a23a88daa6ae6ad4.json... (this will be cached in "/home/runner/work/_temp/ba9df090-0885-4ef3-8c7f-f60b7b9a1659/emsdk-main/upstream/emscripten/cache/symbol_lists/5080d7f1cb92339cb6082081a23a88daa6ae6ad4.json" for subsequent builds)
         cache:INFO:  - ok
-        /home/runner/work/_temp/4e0dca98-ba58-46fc-8bc5-54405d93714f/emsdk-main/upstream/emscripten/em++ @CMakeFiles/cmTC_074b5.dir/objects1.rsp -o cmTC_074b5.js
-        gmake[1]: Leaving directory '/home/runner/work/qt-2048-wasm/qt-2048-wasm/build_clean/CMakeFiles/CMakeScratch/TryCompile-6cXggx'
+        /home/runner/work/_temp/ba9df090-0885-4ef3-8c7f-f60b7b9a1659/emsdk-main/upstream/emscripten/em++ @CMakeFiles/cmTC_815c8.dir/objects1.rsp -o cmTC_815c8.js
+        gmake[1]: Leaving directory '/home/runner/work/qt-2048-wasm/qt-2048-wasm/build_clean/CMakeFiles/CMakeScratch/TryCompile-cGR5EA'
         
       exitCode: 0
   -
@@ -80,14 +80,14 @@ events:
     checks:
       - "Performing Test HAVE_GETTIME"
     directories:
-      source: "/home/runner/work/qt-2048-wasm/qt-2048-wasm/build_clean/CMakeFiles/CMakeScratch/TryCompile-d1mpuR"
-      binary: "/home/runner/work/qt-2048-wasm/qt-2048-wasm/build_clean/CMakeFiles/CMakeScratch/TryCompile-d1mpuR"
+      source: "/home/runner/work/qt-2048-wasm/qt-2048-wasm/build_clean/CMakeFiles/CMakeScratch/TryCompile-S1I13x"
+      binary: "/home/runner/work/qt-2048-wasm/qt-2048-wasm/build_clean/CMakeFiles/CMakeScratch/TryCompile-S1I13x"
     cmakeVariables:
       CMAKE_CXX_COMPILER_CLANG_SCAN_DEPS: "/usr/bin/clang-scan-deps-17"
       CMAKE_CXX_FLAGS: ""
       CMAKE_CXX_FLAGS_DEBUG: "-g"
       CMAKE_EXE_LINKER_FLAGS: ""
-      CMAKE_MODULE_PATH: "/home/runner/work/qt-2048-wasm/qt-2048-wasm/Qt/6.6.1/wasm_singlethread/lib/cmake/Qt6/platforms;/home/runner/work/qt-2048-wasm/qt-2048-wasm/Qt/6.6.1/wasm_singlethread/lib/cmake/Qt6/platforms;/home/runner/work/_temp/4e0dca98-ba58-46fc-8bc5-54405d93714f/emsdk-main/upstream/emscripten/cmake/Modules;/home/runner/work/_temp/4e0dca98-ba58-46fc-8bc5-54405d93714f/emsdk-main/upstream/emscripten/cmake/Modules;/home/runner/work/_temp/4e0dca98-ba58-46fc-8bc5-54405d93714f/emsdk-main/upstream/emscripten/cmake/Modules;/home/runner/work/_temp/4e0dca98-ba58-46fc-8bc5-54405d93714f/emsdk-main/upstream/emscripten/cmake/Modules;/home/runner/work/qt-2048-wasm/qt-2048-wasm/Qt/6.6.1/wasm_singlethread/lib/cmake/Qt6;/home/runner/work/qt-2048-wasm/qt-2048-wasm/Qt/6.6.1/wasm_singlethread/lib/cmake/Qt6/3rdparty/extra-cmake-modules/find-modules;/home/runner/work/qt-2048-wasm/qt-2048-wasm/Qt/6.6.1/wasm_singlethread/lib/cmake/Qt6/3rdparty/kwin"
+      CMAKE_MODULE_PATH: "/home/runner/work/qt-2048-wasm/qt-2048-wasm/Qt/6.6.1/wasm_singlethread/lib/cmake/Qt6/platforms;/home/runner/work/qt-2048-wasm/qt-2048-wasm/Qt/6.6.1/wasm_singlethread/lib/cmake/Qt6/platforms;/home/runner/work/_temp/ba9df090-0885-4ef3-8c7f-f60b7b9a1659/emsdk-main/upstream/emscripten/cmake/Modules;/home/runner/work/_temp/ba9df090-0885-4ef3-8c7f-f60b7b9a1659/emsdk-main/upstream/emscripten/cmake/Modules;/home/runner/work/_temp/ba9df090-0885-4ef3-8c7f-f60b7b9a1659/emsdk-main/upstream/emscripten/cmake/Modules;/home/runner/work/_temp/ba9df090-0885-4ef3-8c7f-f60b7b9a1659/emsdk-main/upstream/emscripten/cmake/Modules;/home/runner/work/qt-2048-wasm/qt-2048-wasm/Qt/6.6.1/wasm_singlethread/lib/cmake/Qt6;/home/runner/work/qt-2048-wasm/qt-2048-wasm/Qt/6.6.1/wasm_singlethread/lib/cmake/Qt6/3rdparty/extra-cmake-modules/find-modules;/home/runner/work/qt-2048-wasm/qt-2048-wasm/Qt/6.6.1/wasm_singlethread/lib/cmake/Qt6/3rdparty/kwin"
       QT_ADDITIONAL_PACKAGES_PREFIX_PATH: ""
       QT_CHAINLOAD_TOOLCHAIN_FILE: ""
       QT_TOOLCHAIN_INCLUDE_FILE: ""
@@ -97,17 +97,17 @@ events:
       variable: "HAVE_GETTIME"
       cached: true
       stdout: |
-        Change Dir: '/home/runner/work/qt-2048-wasm/qt-2048-wasm/build_clean/CMakeFiles/CMakeScratch/TryCompile-d1mpuR'
+        Change Dir: '/home/runner/work/qt-2048-wasm/qt-2048-wasm/build_clean/CMakeFiles/CMakeScratch/TryCompile-S1I13x'
         
-        Run Build Command(s): /usr/local/bin/cmake -E env VERBOSE=1 /usr/bin/gmake -f Makefile cmTC_ebd3e/fast
-        /usr/bin/gmake  -f CMakeFiles/cmTC_ebd3e.dir/build.make CMakeFiles/cmTC_ebd3e.dir/build
-        gmake[1]: Entering directory '/home/runner/work/qt-2048-wasm/qt-2048-wasm/build_clean/CMakeFiles/CMakeScratch/TryCompile-d1mpuR'
-        Building CXX object CMakeFiles/cmTC_ebd3e.dir/src.cxx.o
-        /home/runner/work/_temp/4e0dca98-ba58-46fc-8bc5-54405d93714f/emsdk-main/upstream/emscripten/em++ -DHAVE_GETTIME  -std=gnu++17 -MD -MT CMakeFiles/cmTC_ebd3e.dir/src.cxx.o -MF CMakeFiles/cmTC_ebd3e.dir/src.cxx.o.d -o CMakeFiles/cmTC_ebd3e.dir/src.cxx.o -c /home/runner/work/qt-2048-wasm/qt-2048-wasm/build_clean/CMakeFiles/CMakeScratch/TryCompile-d1mpuR/src.cxx
-        Linking CXX executable cmTC_ebd3e.js
-        /usr/local/bin/cmake -E cmake_link_script CMakeFiles/cmTC_ebd3e.dir/link.txt --verbose=1
-        /home/runner/work/_temp/4e0dca98-ba58-46fc-8bc5-54405d93714f/emsdk-main/upstream/emscripten/em++ @CMakeFiles/cmTC_ebd3e.dir/objects1.rsp -o cmTC_ebd3e.js
-        gmake[1]: Leaving directory '/home/runner/work/qt-2048-wasm/qt-2048-wasm/build_clean/CMakeFiles/CMakeScratch/TryCompile-d1mpuR'
+        Run Build Command(s): /usr/local/bin/cmake -E env VERBOSE=1 /usr/bin/gmake -f Makefile cmTC_1fe06/fast
+        /usr/bin/gmake  -f CMakeFiles/cmTC_1fe06.dir/build.make CMakeFiles/cmTC_1fe06.dir/build
+        gmake[1]: Entering directory '/home/runner/work/qt-2048-wasm/qt-2048-wasm/build_clean/CMakeFiles/CMakeScratch/TryCompile-S1I13x'
+        Building CXX object CMakeFiles/cmTC_1fe06.dir/src.cxx.o
+        /home/runner/work/_temp/ba9df090-0885-4ef3-8c7f-f60b7b9a1659/emsdk-main/upstream/emscripten/em++ -DHAVE_GETTIME  -std=gnu++17 -MD -MT CMakeFiles/cmTC_1fe06.dir/src.cxx.o -MF CMakeFiles/cmTC_1fe06.dir/src.cxx.o.d -o CMakeFiles/cmTC_1fe06.dir/src.cxx.o -c /home/runner/work/qt-2048-wasm/qt-2048-wasm/build_clean/CMakeFiles/CMakeScratch/TryCompile-S1I13x/src.cxx
+        Linking CXX executable cmTC_1fe06.js
+        /usr/local/bin/cmake -E cmake_link_script CMakeFiles/cmTC_1fe06.dir/link.txt --verbose=1
+        /home/runner/work/_temp/ba9df090-0885-4ef3-8c7f-f60b7b9a1659/emsdk-main/upstream/emscripten/em++ @CMakeFiles/cmTC_1fe06.dir/objects1.rsp -o cmTC_1fe06.js
+        gmake[1]: Leaving directory '/home/runner/work/qt-2048-wasm/qt-2048-wasm/build_clean/CMakeFiles/CMakeScratch/TryCompile-S1I13x'
         
       exitCode: 0
   -
@@ -129,14 +129,14 @@ events:
     checks:
       - "Performing Test HAVE_SHM_OPEN_SHM_UNLINK"
     directories:
-      source: "/home/runner/work/qt-2048-wasm/qt-2048-wasm/build_clean/CMakeFiles/CMakeScratch/TryCompile-bfrSsF"
-      binary: "/home/runner/work/qt-2048-wasm/qt-2048-wasm/build_clean/CMakeFiles/CMakeScratch/TryCompile-bfrSsF"
+      source: "/home/runner/work/qt-2048-wasm/qt-2048-wasm/build_clean/CMakeFiles/CMakeScratch/TryCompile-4QaIci"
+      binary: "/home/runner/work/qt-2048-wasm/qt-2048-wasm/build_clean/CMakeFiles/CMakeScratch/TryCompile-4QaIci"
     cmakeVariables:
       CMAKE_CXX_COMPILER_CLANG_SCAN_DEPS: "/usr/bin/clang-scan-deps-17"
       CMAKE_CXX_FLAGS: ""
       CMAKE_CXX_FLAGS_DEBUG: "-g"
       CMAKE_EXE_LINKER_FLAGS: ""
-      CMAKE_MODULE_PATH: "/home/runner/work/qt-2048-wasm/qt-2048-wasm/Qt/6.6.1/wasm_singlethread/lib/cmake/Qt6/platforms;/home/runner/work/qt-2048-wasm/qt-2048-wasm/Qt/6.6.1/wasm_singlethread/lib/cmake/Qt6/platforms;/home/runner/work/_temp/4e0dca98-ba58-46fc-8bc5-54405d93714f/emsdk-main/upstream/emscripten/cmake/Modules;/home/runner/work/_temp/4e0dca98-ba58-46fc-8bc5-54405d93714f/emsdk-main/upstream/emscripten/cmake/Modules;/home/runner/work/_temp/4e0dca98-ba58-46fc-8bc5-54405d93714f/emsdk-main/upstream/emscripten/cmake/Modules;/home/runner/work/_temp/4e0dca98-ba58-46fc-8bc5-54405d93714f/emsdk-main/upstream/emscripten/cmake/Modules;/home/runner/work/qt-2048-wasm/qt-2048-wasm/Qt/6.6.1/wasm_singlethread/lib/cmake/Qt6;/home/runner/work/qt-2048-wasm/qt-2048-wasm/Qt/6.6.1/wasm_singlethread/lib/cmake/Qt6/3rdparty/extra-cmake-modules/find-modules;/home/runner/work/qt-2048-wasm/qt-2048-wasm/Qt/6.6.1/wasm_singlethread/lib/cmake/Qt6/3rdparty/kwin"
+      CMAKE_MODULE_PATH: "/home/runner/work/qt-2048-wasm/qt-2048-wasm/Qt/6.6.1/wasm_singlethread/lib/cmake/Qt6/platforms;/home/runner/work/qt-2048-wasm/qt-2048-wasm/Qt/6.6.1/wasm_singlethread/lib/cmake/Qt6/platforms;/home/runner/work/_temp/ba9df090-0885-4ef3-8c7f-f60b7b9a1659/emsdk-main/upstream/emscripten/cmake/Modules;/home/runner/work/_temp/ba9df090-0885-4ef3-8c7f-f60b7b9a1659/emsdk-main/upstream/emscripten/cmake/Modules;/home/runner/work/_temp/ba9df090-0885-4ef3-8c7f-f60b7b9a1659/emsdk-main/upstream/emscripten/cmake/Modules;/home/runner/work/_temp/ba9df090-0885-4ef3-8c7f-f60b7b9a1659/emsdk-main/upstream/emscripten/cmake/Modules;/home/runner/work/qt-2048-wasm/qt-2048-wasm/Qt/6.6.1/wasm_singlethread/lib/cmake/Qt6;/home/runner/work/qt-2048-wasm/qt-2048-wasm/Qt/6.6.1/wasm_singlethread/lib/cmake/Qt6/3rdparty/extra-cmake-modules/find-modules;/home/runner/work/qt-2048-wasm/qt-2048-wasm/Qt/6.6.1/wasm_singlethread/lib/cmake/Qt6/3rdparty/kwin"
       QT_ADDITIONAL_PACKAGES_PREFIX_PATH: ""
       QT_CHAINLOAD_TOOLCHAIN_FILE: ""
       QT_TOOLCHAIN_INCLUDE_FILE: ""
@@ -146,17 +146,17 @@ events:
       variable: "HAVE_SHM_OPEN_SHM_UNLINK"
       cached: true
       stdout: |
-        Change Dir: '/home/runner/work/qt-2048-wasm/qt-2048-wasm/build_clean/CMakeFiles/CMakeScratch/TryCompile-bfrSsF'
+        Change Dir: '/home/runner/work/qt-2048-wasm/qt-2048-wasm/build_clean/CMakeFiles/CMakeScratch/TryCompile-4QaIci'
         
-        Run Build Command(s): /usr/local/bin/cmake -E env VERBOSE=1 /usr/bin/gmake -f Makefile cmTC_bac28/fast
-        /usr/bin/gmake  -f CMakeFiles/cmTC_bac28.dir/build.make CMakeFiles/cmTC_bac28.dir/build
-        gmake[1]: Entering directory '/home/runner/work/qt-2048-wasm/qt-2048-wasm/build_clean/CMakeFiles/CMakeScratch/TryCompile-bfrSsF'
-        Building CXX object CMakeFiles/cmTC_bac28.dir/src.cxx.o
-        /home/runner/work/_temp/4e0dca98-ba58-46fc-8bc5-54405d93714f/emsdk-main/upstream/emscripten/em++ -DHAVE_SHM_OPEN_SHM_UNLINK  -std=gnu++17 -MD -MT CMakeFiles/cmTC_bac28.dir/src.cxx.o -MF CMakeFiles/cmTC_bac28.dir/src.cxx.o.d -o CMakeFiles/cmTC_bac28.dir/src.cxx.o -c /home/runner/work/qt-2048-wasm/qt-2048-wasm/build_clean/CMakeFiles/CMakeScratch/TryCompile-bfrSsF/src.cxx
-        Linking CXX executable cmTC_bac28.js
-        /usr/local/bin/cmake -E cmake_link_script CMakeFiles/cmTC_bac28.dir/link.txt --verbose=1
-        /home/runner/work/_temp/4e0dca98-ba58-46fc-8bc5-54405d93714f/emsdk-main/upstream/emscripten/em++ @CMakeFiles/cmTC_bac28.dir/objects1.rsp -o cmTC_bac28.js
-        gmake[1]: Leaving directory '/home/runner/work/qt-2048-wasm/qt-2048-wasm/build_clean/CMakeFiles/CMakeScratch/TryCompile-bfrSsF'
+        Run Build Command(s): /usr/local/bin/cmake -E env VERBOSE=1 /usr/bin/gmake -f Makefile cmTC_d40f1/fast
+        /usr/bin/gmake  -f CMakeFiles/cmTC_d40f1.dir/build.make CMakeFiles/cmTC_d40f1.dir/build
+        gmake[1]: Entering directory '/home/runner/work/qt-2048-wasm/qt-2048-wasm/build_clean/CMakeFiles/CMakeScratch/TryCompile-4QaIci'
+        Building CXX object CMakeFiles/cmTC_d40f1.dir/src.cxx.o
+        /home/runner/work/_temp/ba9df090-0885-4ef3-8c7f-f60b7b9a1659/emsdk-main/upstream/emscripten/em++ -DHAVE_SHM_OPEN_SHM_UNLINK  -std=gnu++17 -MD -MT CMakeFiles/cmTC_d40f1.dir/src.cxx.o -MF CMakeFiles/cmTC_d40f1.dir/src.cxx.o.d -o CMakeFiles/cmTC_d40f1.dir/src.cxx.o -c /home/runner/work/qt-2048-wasm/qt-2048-wasm/build_clean/CMakeFiles/CMakeScratch/TryCompile-4QaIci/src.cxx
+        Linking CXX executable cmTC_d40f1.js
+        /usr/local/bin/cmake -E cmake_link_script CMakeFiles/cmTC_d40f1.dir/link.txt --verbose=1
+        /home/runner/work/_temp/ba9df090-0885-4ef3-8c7f-f60b7b9a1659/emsdk-main/upstream/emscripten/em++ @CMakeFiles/cmTC_d40f1.dir/objects1.rsp -o cmTC_d40f1.js
+        gmake[1]: Leaving directory '/home/runner/work/qt-2048-wasm/qt-2048-wasm/build_clean/CMakeFiles/CMakeScratch/TryCompile-4QaIci'
         
       exitCode: 0
   -
@@ -178,14 +178,14 @@ events:
     checks:
       - "Performing Test HAVE_EGL"
     directories:
-      source: "/home/runner/work/qt-2048-wasm/qt-2048-wasm/build_clean/CMakeFiles/CMakeScratch/TryCompile-GgtEYT"
-      binary: "/home/runner/work/qt-2048-wasm/qt-2048-wasm/build_clean/CMakeFiles/CMakeScratch/TryCompile-GgtEYT"
+      source: "/home/runner/work/qt-2048-wasm/qt-2048-wasm/build_clean/CMakeFiles/CMakeScratch/TryCompile-bfwHJF"
+      binary: "/home/runner/work/qt-2048-wasm/qt-2048-wasm/build_clean/CMakeFiles/CMakeScratch/TryCompile-bfwHJF"
     cmakeVariables:
       CMAKE_CXX_COMPILER_CLANG_SCAN_DEPS: "/usr/bin/clang-scan-deps-17"
       CMAKE_CXX_FLAGS: ""
       CMAKE_CXX_FLAGS_DEBUG: "-g"
       CMAKE_EXE_LINKER_FLAGS: ""
-      CMAKE_MODULE_PATH: "/home/runner/work/qt-2048-wasm/qt-2048-wasm/Qt/6.6.1/wasm_singlethread/lib/cmake/Qt6/platforms;/home/runner/work/qt-2048-wasm/qt-2048-wasm/Qt/6.6.1/wasm_singlethread/lib/cmake/Qt6/platforms;/home/runner/work/_temp/4e0dca98-ba58-46fc-8bc5-54405d93714f/emsdk-main/upstream/emscripten/cmake/Modules;/home/runner/work/_temp/4e0dca98-ba58-46fc-8bc5-54405d93714f/emsdk-main/upstream/emscripten/cmake/Modules;/home/runner/work/_temp/4e0dca98-ba58-46fc-8bc5-54405d93714f/emsdk-main/upstream/emscripten/cmake/Modules;/home/runner/work/_temp/4e0dca98-ba58-46fc-8bc5-54405d93714f/emsdk-main/upstream/emscripten/cmake/Modules;/home/runner/work/qt-2048-wasm/qt-2048-wasm/Qt/6.6.1/wasm_singlethread/lib/cmake/Qt6;/home/runner/work/qt-2048-wasm/qt-2048-wasm/Qt/6.6.1/wasm_singlethread/lib/cmake/Qt6/3rdparty/extra-cmake-modules/find-modules;/home/runner/work/qt-2048-wasm/qt-2048-wasm/Qt/6.6.1/wasm_singlethread/lib/cmake/Qt6/3rdparty/kwin"
+      CMAKE_MODULE_PATH: "/home/runner/work/qt-2048-wasm/qt-2048-wasm/Qt/6.6.1/wasm_singlethread/lib/cmake/Qt6/platforms;/home/runner/work/qt-2048-wasm/qt-2048-wasm/Qt/6.6.1/wasm_singlethread/lib/cmake/Qt6/platforms;/home/runner/work/_temp/ba9df090-0885-4ef3-8c7f-f60b7b9a1659/emsdk-main/upstream/emscripten/cmake/Modules;/home/runner/work/_temp/ba9df090-0885-4ef3-8c7f-f60b7b9a1659/emsdk-main/upstream/emscripten/cmake/Modules;/home/runner/work/_temp/ba9df090-0885-4ef3-8c7f-f60b7b9a1659/emsdk-main/upstream/emscripten/cmake/Modules;/home/runner/work/_temp/ba9df090-0885-4ef3-8c7f-f60b7b9a1659/emsdk-main/upstream/emscripten/cmake/Modules;/home/runner/work/qt-2048-wasm/qt-2048-wasm/Qt/6.6.1/wasm_singlethread/lib/cmake/Qt6;/home/runner/work/qt-2048-wasm/qt-2048-wasm/Qt/6.6.1/wasm_singlethread/lib/cmake/Qt6/3rdparty/extra-cmake-modules/find-modules;/home/runner/work/qt-2048-wasm/qt-2048-wasm/Qt/6.6.1/wasm_singlethread/lib/cmake/Qt6/3rdparty/kwin"
       QT_ADDITIONAL_PACKAGES_PREFIX_PATH: ""
       QT_CHAINLOAD_TOOLCHAIN_FILE: ""
       QT_TOOLCHAIN_INCLUDE_FILE: ""
@@ -195,17 +195,17 @@ events:
       variable: "HAVE_EGL"
       cached: true
       stdout: |
-        Change Dir: '/home/runner/work/qt-2048-wasm/qt-2048-wasm/build_clean/CMakeFiles/CMakeScratch/TryCompile-GgtEYT'
+        Change Dir: '/home/runner/work/qt-2048-wasm/qt-2048-wasm/build_clean/CMakeFiles/CMakeScratch/TryCompile-bfwHJF'
         
-        Run Build Command(s): /usr/local/bin/cmake -E env VERBOSE=1 /usr/bin/gmake -f Makefile cmTC_92c4c/fast
-        /usr/bin/gmake  -f CMakeFiles/cmTC_92c4c.dir/build.make CMakeFiles/cmTC_92c4c.dir/build
-        gmake[1]: Entering directory '/home/runner/work/qt-2048-wasm/qt-2048-wasm/build_clean/CMakeFiles/CMakeScratch/TryCompile-GgtEYT'
-        Building CXX object CMakeFiles/cmTC_92c4c.dir/src.cxx.o
-        /home/runner/work/_temp/4e0dca98-ba58-46fc-8bc5-54405d93714f/emsdk-main/upstream/emscripten/em++ -DHAVE_EGL  -std=gnu++17 -MD -MT CMakeFiles/cmTC_92c4c.dir/src.cxx.o -MF CMakeFiles/cmTC_92c4c.dir/src.cxx.o.d -o CMakeFiles/cmTC_92c4c.dir/src.cxx.o -c /home/runner/work/qt-2048-wasm/qt-2048-wasm/build_clean/CMakeFiles/CMakeScratch/TryCompile-GgtEYT/src.cxx
-        Linking CXX executable cmTC_92c4c.js
-        /usr/local/bin/cmake -E cmake_link_script CMakeFiles/cmTC_92c4c.dir/link.txt --verbose=1
-        /home/runner/work/_temp/4e0dca98-ba58-46fc-8bc5-54405d93714f/emsdk-main/upstream/emscripten/em++ @CMakeFiles/cmTC_92c4c.dir/objects1.rsp -o cmTC_92c4c.js
-        gmake[1]: Leaving directory '/home/runner/work/qt-2048-wasm/qt-2048-wasm/build_clean/CMakeFiles/CMakeScratch/TryCompile-GgtEYT'
+        Run Build Command(s): /usr/local/bin/cmake -E env VERBOSE=1 /usr/bin/gmake -f Makefile cmTC_4c29c/fast
+        /usr/bin/gmake  -f CMakeFiles/cmTC_4c29c.dir/build.make CMakeFiles/cmTC_4c29c.dir/build
+        gmake[1]: Entering directory '/home/runner/work/qt-2048-wasm/qt-2048-wasm/build_clean/CMakeFiles/CMakeScratch/TryCompile-bfwHJF'
+        Building CXX object CMakeFiles/cmTC_4c29c.dir/src.cxx.o
+        /home/runner/work/_temp/ba9df090-0885-4ef3-8c7f-f60b7b9a1659/emsdk-main/upstream/emscripten/em++ -DHAVE_EGL  -std=gnu++17 -MD -MT CMakeFiles/cmTC_4c29c.dir/src.cxx.o -MF CMakeFiles/cmTC_4c29c.dir/src.cxx.o.d -o CMakeFiles/cmTC_4c29c.dir/src.cxx.o -c /home/runner/work/qt-2048-wasm/qt-2048-wasm/build_clean/CMakeFiles/CMakeScratch/TryCompile-bfwHJF/src.cxx
+        Linking CXX executable cmTC_4c29c.js
+        /usr/local/bin/cmake -E cmake_link_script CMakeFiles/cmTC_4c29c.dir/link.txt --verbose=1
+        /home/runner/work/_temp/ba9df090-0885-4ef3-8c7f-f60b7b9a1659/emsdk-main/upstream/emscripten/em++ @CMakeFiles/cmTC_4c29c.dir/objects1.rsp -o cmTC_4c29c.js
+        gmake[1]: Leaving directory '/home/runner/work/qt-2048-wasm/qt-2048-wasm/build_clean/CMakeFiles/CMakeScratch/TryCompile-bfwHJF'
         
       exitCode: 0
 ...
