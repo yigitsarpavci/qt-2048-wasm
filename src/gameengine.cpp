@@ -3,8 +3,9 @@
 #include "gameengine.h"
 #include <algorithm>
 #include <ctime>
-#include <QDebug>
-#include <QDateTime>
+#include <iostream>
+#include <iomanip>
+#include <chrono>
 
 GameEngine::GameEngine(int n, int m, int k) 
     : m_rows(n), m_cols(m), m_k(k), m_rng(static_cast<unsigned int>(std::time(nullptr))) 
@@ -51,7 +52,7 @@ bool GameEngine::move(Direction dir) {
 
     // Rotates coordinates to allow a single left-to-right merge logic to handle all four directions.
     auto rotate = [&](int& r, int& c, bool back = false) {
-        Q_UNUSED(back);
+        (void)back;
         if (dir == Direction::Up) return;
         if (dir == Direction::Down) { r = m_rows - 1 - r; }
         else if (dir == Direction::Left) { std::swap(r, c); }
@@ -179,8 +180,12 @@ bool GameEngine::canMove() const {
 
 // Logs move transaction details for monitoring and debugging.
 void GameEngine::logTransaction(int delta, int merges) {
-    m_txCounter++;
-    QString ts = QDateTime::currentDateTime().toString("hh:mm:ss.zzz");
-    qDebug().noquote() << QString("[%1] TX#%2 | Score: %3 (+%4) | Merges: %5 | NextID: %6")
-        .arg(ts).arg(m_txCounter).arg(m_score).arg(delta).arg(merges).arg(m_nextId);
+    auto now = std::chrono::system_clock::now();
+    auto ms = std::chrono::duration_cast<std::chrono::milliseconds>(now.time_since_epoch()) % 1000;
+    auto timer = std::chrono::system_clock::to_time_t(now);
+    std::tm bt = *std::localtime(&timer);
+    
+    std::cout << "[" << std::put_time(&bt, "%H:%M:%S") << "." << std::setfill('0') << std::setw(3) << ms.count() << "] "
+              << "TX#" << m_txCounter << " | Score: " << m_score << " (+" << delta 
+              << ") | Merges: " << merges << " | NextID: " << m_nextId << std::endl;
 }

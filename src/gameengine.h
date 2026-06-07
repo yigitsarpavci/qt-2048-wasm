@@ -7,7 +7,6 @@
 #include <vector>
 #include <random>
 #include <optional>
-#include <QtCore/qglobal.h>
 
 // Represents the four cardinal directions for tile movement.
 enum class Direction { Up, Down, Left, Right };
