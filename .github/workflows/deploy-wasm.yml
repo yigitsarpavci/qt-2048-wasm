@@ -1,0 +1,239 @@
+name: Deploy 2048 to GitHub Pages
+on:
+  push:
+    branches: [ main ]
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Cache Qt
+        id: cache-qt
+        uses: actions/cache@v4
+        with:
+          path: ${{ github.workspace }}/Qt
+          key: ${{ runner.os }}-qt-6.6.1-wasm-v8
+          
+      - name: Install Host Qt
+        if: steps.cache-qt.outputs.cache-hit != 'true'
+        uses: jurplel/install-qt-action@v3
+        with:
+          version: '6.6.1'
+          target: 'desktop'
+          arch: 'gcc_64'
+          dir: ${{ github.workspace }}
+          
+      - name: Install WASM Qt
+        if: steps.cache-qt.outputs.cache-hit != 'true'
+        uses: jurplel/install-qt-action@v3
+        with:
+          version: '6.6.1'
+          target: 'desktop'
+          arch: 'wasm_singlethread'
+          dir: ${{ github.workspace }}
+          
+      - name: Setup Emscripten
+        uses: mymindstorm/setup-emsdk@v12
+        with:
+          version: '3.1.37'
+          
+      - name: ccache
+        uses: hendrikmuhs/ccache-action@v1.2
+        with:
+          key: ${{ runner.os }}-ccache
+          
+      - name: Build Project
+        run: |
+          mkdir -p build_clean
+          cd build_clean
+          
+          # Absolute Path Discovery with Permission Hardening
+          QT_ROOT="${{ github.workspace }}/Qt/6.6.1"
+          QT_WASM_PATH=$(find $QT_ROOT -name "wasm_singlethread" | head -n 1)
+          QT_HOST_PATH=$(find $QT_ROOT -name "gcc_64" | head -n 1)
+          
+          if [ -z "$QT_WASM_PATH" ]; then echo "Error: WASM Qt not found"; exit 1; fi
+          
+          # Fix permissions for CACHED binaries
+          chmod +x $QT_WASM_PATH/bin/* || true
+          chmod +x $QT_HOST_PATH/bin/* || true
+          
+          export PATH="/usr/lib/ccache:/usr/local/opt/ccache/libexec:$PATH"
+          $QT_WASM_PATH/bin/qt-cmake .. -DQT_HOST_PATH=$QT_HOST_PATH -DCMAKE_BUILD_TYPE=Release \
+            -DCMAKE_CXX_COMPILER_LAUNCHER=ccache \
+            -DCMAKE_C_COMPILER_LAUNCHER=ccache
+          cmake --build . --parallel $(nproc)
+          
+      - name: Prepare Deployment
+        run: |
+          mkdir -p public
+          rm -rf public/*
+          cp -r build_clean/* public/
+          cp src/style.css public/
+          mv public/2048.html public/index.html || true
+          
+          if [ ! -f "public/index.html" ]; then echo "Error: index.html missing"; exit 1; fi
+          
+          SHA_SHORT=$(echo ${{ github.sha }} | cut -c1-7)
+          sed -i "s/\([a-zA-Z0-9]*\)\.js/\1\.js?v=${SHA_SHORT}/g" public/index.html
+          sed -i "s/2048\.wasm/2048\.wasm?v=${SHA_SHORT}/g" public/index.html
+
+      - name: Refactor HTML for Mobile Layout
+        run: |
+          python3 - <<'EOF'
+          import os, re
+          path = 'public/index.html'
+          if not os.path.exists(path):
+              print("index.html not found")
+              exit(1)
+              
+          with open(path, 'r') as f:
+              content = f.read()
+
+          # 1. Inject Stylesheet and remove existing inline styles
+          head_split = content.split('</head>')
+          if len(head_split) > 1:
+              head = head_split[0]
+              head = re.sub(r'<style>.*?</style>', '', head, flags=re.DOTALL)
+              new_head = head + '<link rel="stylesheet" href="style.css">\n</head>'
+              content = new_head + head_split[1]
+
+          # 2. Robust Wrapper Injection
+          # We wrap everything inside <body>...</body> into our #game-container
+          # but we must keep scripts at the end if they were there.
+          body_match = re.search(r'(<body[^>]*>)(.*?)(</body>)', content, re.DOTALL)
+          if body_match:
+              body_open = body_match.group(1)
+              body_inner = body_match.group(2)
+              body_close = body_match.group(3)
+              
+              # We wrap the inner content. We don't want to break relative script paths.
+              wrapped_inner = f'<div id="game-container">{body_inner}</div>'
+              content = content.replace(body_match.group(0), f'{body_open}{wrapped_inner}{body_close}')
+
+          # 3. Ensure screen container is styled correctly to be visible
+          content = content.replace('id="screen"', 'id="screen" style="width:100%; height:100%;"')
+
+          # 4. Inject focus management script to fix keyboard input on deployed builds.
+          #    Ensures clicking ANYWHERE on the page (including empty space around the
+          #    game UI) keeps keyboard input active for the game.
+          focus_script = '''
+          <script>
+          (function() {
+              // Robust canvas finder - searches regular DOM and shadow roots
+              function findCanvas() {
+                  var c = document.querySelector('canvas');
+                  if (c) return c;
+                  // Search inside Qt's screen container and any shadow roots
+                  var screen = document.getElementById('screen');
+                  if (screen) {
+                      c = screen.querySelector('canvas');
+                      if (c) return c;
+                      // Check shadow roots
+                      var children = screen.querySelectorAll('*');
+                      for (var i = 0; i < children.length; i++) {
+                          if (children[i].shadowRoot) {
+                              c = children[i].shadowRoot.querySelector('canvas');
+                              if (c) return c;
+                          }
+                      }
+                  }
+                  // Last resort: search entire document for any canvas
+                  var allDivs = document.querySelectorAll('div');
+                  for (var j = 0; j < allDivs.length; j++) {
+                      if (allDivs[j].shadowRoot) {
+                          c = allDivs[j].shadowRoot.querySelector('canvas');
+                          if (c) return c;
+                      }
+                  }
+                  return null;
+              }
+
+              function refocusCanvas() {
+                  var c = findCanvas();
+                  if (c) {
+                      c.setAttribute('tabindex', '0');
+                      c.focus({preventScroll: true});
+                  }
+              }
+
+              window.addEventListener('load', function() {
+                  // Initial focus with retries (Qt may create canvas late)
+                  [300, 800, 1500, 3000].forEach(function(ms) {
+                      setTimeout(refocusCanvas, ms);
+                  });
+
+                  // ANY click/touch ANYWHERE on the page refocuses the canvas.
+                  // Using mousedown (fires before focus changes) on window to catch everything.
+                  window.addEventListener('mousedown', function() {
+                      setTimeout(refocusCanvas, 0);
+                      setTimeout(refocusCanvas, 50);
+                  }, true);
+
+                  window.addEventListener('touchstart', function() {
+                      setTimeout(refocusCanvas, 0);
+                      setTimeout(refocusCanvas, 50);
+                  }, true);
+
+                  // Nuclear fallback: if canvas doesn't have focus, forward key events to it.
+                  // This ensures gameplay keys ALWAYS work regardless of focus state.
+                  var gameKeys = ['ArrowUp','ArrowDown','ArrowLeft','ArrowRight','w','a','s','d','r','u','1','2','3'];
+                  window.addEventListener('keydown', function(e) {
+                      // Prevent default for arrow keys and space to stop page scrolling
+                      if (['ArrowUp','ArrowDown','ArrowLeft','ArrowRight',' '].indexOf(e.key) !== -1) {
+                          e.preventDefault();
+                      }
+                      // If a game key is pressed but canvas doesn't have focus, forward it
+                      var c = findCanvas();
+                      if (c && document.activeElement !== c && gameKeys.indexOf(e.key) !== -1) {
+                          c.focus({preventScroll: true});
+                          c.dispatchEvent(new KeyboardEvent('keydown', {
+                              key: e.key, code: e.code, keyCode: e.keyCode,
+                              bubbles: true, cancelable: true
+                          }));
+                      }
+                  }, true);
+
+                  // Neuter focus on Qt-generated accessibility overlays
+                  var observer = new MutationObserver(function(mutations) {
+                      mutations.forEach(function(m) {
+                          m.addedNodes.forEach(function(node) {
+                              if (node.nodeType === 1) {
+                                  if (node.getAttribute && node.getAttribute('role')) {
+                                      node.setAttribute('tabindex', '-1');
+                                  }
+                                  var children = node.querySelectorAll ? node.querySelectorAll('[role]') : [];
+                                  children.forEach(function(ch) { ch.setAttribute('tabindex', '-1'); });
+                              }
+                          });
+                      });
+                  });
+                  observer.observe(document.body, { childList: true, subtree: true });
+
+                  document.querySelectorAll('[role]').forEach(function(el) {
+                      el.setAttribute('tabindex', '-1');
+                  });
+              });
+          })();
+          </script>
+          '''
+          content = content.replace('</body>', focus_script + '</body>')
+
+
+          with open(path, 'w') as f:
+              f.write(content)
+          print("HTML Refactored for Mobile Layout successfully.")
+          EOF
+
+
+      - name: Deploy
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./public
+          user_name: 'github-actions[bot]'
+          user_email: 'github-actions[bot]@users.noreply.github.com'
